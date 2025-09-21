@@ -265,6 +265,9 @@ Pattern=48895C2410565741564883EC40
 Pattern=4881EC90000000488BDA
 Operations=ADD -6
 
+[CGameAreaNotes::UpdateButtonPositions]
+Pattern=488BC45541574883EC68
+
 [CGameContainer::SetDrawPoly]
 Pattern=663B91A0090000
 Operations=ADD -16
@@ -386,12 +389,20 @@ Pattern=48896C24104889742418574881ECE0000000
 Pattern=4889442430448BFA
 Operations=ADD -38
 
+[CInfCursor::SetCursor]
+Pattern=8B8958050000
+Operations=ADD -28
+
 [CInfGame::GetCharacterPortraitNum]
 Pattern=4239948118660000
 Operations=ADD -20
 
 [CInfGame::GetFamiliar]
 Pattern=405556574883EC40
+
+[CInfGame::GetScrollSpeed]
+Pattern=83BA3402000000
+Operations=ADD -15
 
 [CInfGame::OnPortraitLDblClick]
 Pattern=0F8DAE000000
@@ -414,6 +425,30 @@ Operations=ADD -9
 
 [CInfGame::UnselectAll]
 Pattern=5541564883EC30488BD9
+Operations=ADD -2
+
+[CInfinity::FitViewPosition]
+Pattern=4D894B20534154
+Operations=ADD -3
+
+[CInfinity::ScreenToViewport]
+Pattern=574883EC208B8180000000
+Operations=ADD -10
+
+[CInfinity::ScreenToWorld]
+Pattern=41564883EC208B8180000000
+Operations=ADD -7
+
+[CInfinity::SetScrollDest]
+Pattern=488BD948898100030000
+Operations=ADD -9
+
+[CInfinity::SetViewPosition]
+Pattern=4889580844894018
+Operations=ADD -3
+
+[CInfinity::SetZoom]
+Pattern=4883EC200F28D1
 Operations=ADD -2
 
 [CItem::Construct(CResRef,ushort,ushort,ushort,ushort,uint)]
@@ -598,6 +633,13 @@ Operations=ADD -31
 Pattern=740A833804
 Operations=ADD 8, PUSH, READ DWORD, ADD, ADD 4
 
+[uiIsHidden]
+Pattern=8887D8080000
+Operations=ADD 14, PUSH, READ DWORD, ADD, ADD 4
+
+[uiIsMenuOnStack]
+Pattern=48895C2408488974241848897C24204156
+
 [uiKillCapture]
 Pattern=488B8A88100000
 Operations=ADD 13, PUSH, READ DWORD, ADD, ADD 4
@@ -636,6 +678,10 @@ Operations=ADD 71, PUSH, READ DWORD, ADD, ADD 4
 
 [CGameObject::DEFAULT_VISIBLE_TERRAIN_TABLE]
 Pattern=4C8D83D8030000
+Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
+
+[CInfinity::MAXZOOM_OUT]
+Pattern=488BF94881C1C8050000
 Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
 
 [CVidMode::SCREENHEIGHT]
@@ -1008,6 +1054,9 @@ Operations=ADD -10
 Pattern=488D6C24F94881EC00010000
 Operations=ADD -16
 
+[CNetwork::ThreadLoop]
+Pattern=405541564883EC28
+
 [CProjectile::DecodeProjectile]
 Pattern=488BF24889542468
 Operations=ADD -49
@@ -1068,6 +1117,14 @@ Operations=ADD 60, PUSH, READ DWORD, ADD, ADD 4
 Pattern=F30F2CC0488D5580
 Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
 
+[SDL_Delay]
+Pattern=55565741544156488BEC
+Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
+
+[SDL_GetModState]
+Pattern=3999EC7E0000
+Operations=ADD 9, PUSH, READ DWORD, ADD, ADD 4
+
 [SDL_GetTicks]
 Pattern=742C488D4C2430
 Operations=ADD -25
@@ -1079,6 +1136,10 @@ Operations=ADD -15
 [SDL_ShowSimpleMessageBox]
 Pattern=4889742418574883EC70488BFA
 Operations=ADD -10
+
+[SearchThreadMain]
+Pattern=488DAC240870FEFF
+Operations=ADD -4
 
 [bootstrapLua]
 Pattern=B918190000
@@ -1107,6 +1168,14 @@ Operations=ADD -24
 [drawSliceSide]
 Pattern=488945E7660F6E02
 Operations=ADD -33
+
+[fadeSounds]
+Pattern=4885DB0F8426010000
+Operations=ADD -24
+
+[fwrite]
+Pattern=4C894018488950104889480855
+Operations=ADD -7
 
 [l_log_print]
 Pattern=BB010000008BF0
@@ -1695,6 +1764,10 @@ ExeSwitchAlias=SiegeOfDragonspear.exe:Baldur.exe
 [Hook-CChitin::SynchronousUpdate()-FirstInstruction]
 Pattern=488BC4534883EC60
 
+[Hook-CChitin::Update()-FirstInstruction]
+Pattern=8BD885C00F8EBB000000
+Operations=ADD -35
+
 [Hook-CDerivedStats::Construct()-FirstCall]
 Pattern=48894C24085741544155415641574883EC20488BF1
 Operations=ADD 28
@@ -1741,6 +1814,14 @@ Pattern=48895C2418574883EC20488BD9
 [Hook-CGameArea::AddClairvoyanceObject(CGameSprite*,CPoint,int)-FirstInstruction]
 Pattern=41564883EC30488BF2
 Operations=ADD -12
+
+[Hook-CGameArea::OnMouseMove()-OnAfterAreaEdgeScrollPossiblyStarted]
+Pattern=C7815C05000004000000
+Operations=ADD 26
+
+[Hook-CGameArea::RenderZoomed()-FirstInstruction]
+Pattern=448B9934060000
+Operations=ADD -15
 
 [Hook-CGameContainer::Render()-B3EmptyContainer]
 Pattern=85C00F8893000000
@@ -2099,6 +2180,20 @@ Operations=ADD 72
 Pattern=413B7C2434
 Operations=ADD 14
 
+[Hook-CInfinity::AdjustViewPosition()-FirstInstruction]
+Pattern=48895C241855565741564157488BEC4883EC30
+
+[Hook-CInfinity::FitViewPosition()-FirstInstruction]
+Pattern=4D894B20534154
+Operations=ADD -3
+
+[Hook-CInfinity::Scroll()-FirstInstruction]
+Pattern=4889542410555356574154415541564157488BEC
+
+[Hook-CInfinity::SetScrollDest()-FirstInstruction]
+Pattern=488BD948898100030000
+Operations=ADD -9
+
 [Hook-CItem::GetUsabilityText()-IsOp319InvertedJmp]
 Pattern=4183BC2488000000000F84A4000000
 Operations=ADD 55
@@ -2119,9 +2214,35 @@ Operations=ADD 35
 Pattern=48897C241055488BEC4883EC30
 Operations=ADD -5
 
+[Hook-CScreenMap::CenterViewPort()-FirstInstruction]
+Pattern=4889442458488B02
+Operations=ADD -20
+
+[Hook-CScreenWorld::AsynchronousUpdate()-AutoZoomJmp]
+Pattern=4C8BF1448BFF
+Operations=ADD 52
+
+[Hook-CScreenWorld::EngineDeactivated()-FirstCall]
+Pattern=48895C2420574883EC30488BD9
+Operations=ADD 13
+
+[Hook-CScreenWorld::OnEvent()-OnHandleMiddleMouseDragJmp]
+Pattern=0F85BE00000083BECC00000000
+Operations=ADD 13
+
 [Hook-CScreenWorld::OnKeyDown()-ThievingHotkeyPressSpecialAbilitiesCall]
 Pattern=3CFF7484
 Operations=ADD 10
+
+[Hook-CScreenWorld::ResetZoom()-FirstInstruction]
+Pattern=83B9A80B000000488BD1
+
+[Hook-CScreenWorld::StartScroll()-FirstInstruction]
+Pattern=4883EC20410FB7D8
+Operations=ADD -6
+
+[Hook-CScreenWorld::ZoomToMap()-FirstInstruction]
+Pattern=488BC441544157
 
 [Hook-CVisibilityMap::AddCharacter()-FirstInstruction]
 Pattern=415441564157488BEC4883EC400FB64550

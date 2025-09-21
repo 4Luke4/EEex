@@ -43,6 +43,8 @@ EEex_Main_Private_StartupFiles = {
 	"EEex_Test",             --
 	"EEex_Trigger",          --
 	"EEex_Trigger_Patch",    --
+	"EEex_UncapFPS",         --
+	"EEex_UncapFPS_Patch",   --
 	"EEex_Variable",         --
 	-- Late files
 	"EEex_Debug",            --

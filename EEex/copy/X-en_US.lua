@@ -151,6 +151,24 @@ Enables a red bar next to party member portraits.
 This indicator displays the interval of modal actions: find traps, turn undead, etc.
 ]]
 
+---------------
+-- Uncap FPS --
+---------------
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_Enable"] = "Enable"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_Enable_Description"] = [[
+Removes the engine's usual 30fps cap, allowing the game to render at your monitor's refresh rate.
+
+This improves the smoothness of viewport movement on high refresh rate monitors.
+]]
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_RemoveMiddleMouseScrollMultiplier"] = "Remove Middle Mouse Scroll Multiplier"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_RemoveMiddleMouseScrollMultiplier_Description"] = [[
+Removes the hardcoded multiplier applied to viewport movement performed by holding down the middle-mouse button.
+]]
+
 -------------------
 -- Miscellaneous --
 -------------------
