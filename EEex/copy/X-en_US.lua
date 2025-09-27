@@ -155,12 +155,41 @@ This indicator displays the interval of modal actions: find traps, turn undead, 
 -- Uncap FPS --
 ---------------
 
-uiStrings["EEex_Options_TRANSLATION_UncapFPS_Enable"] = "Enable"
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_AISpeed"] = "AI Speed"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_AISpeed_Description"] = [[
+The number of times per second the "logic" of the game is ticked.
+
+This determines the speed of gameplay.
+]]
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_BusyWaitThreshold"] = "Busy Wait Threshold"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_BusyWaitThreshold_Description"] = [[
+If the next frame is scheduled within this number of milliseconds, the engine busy-waits
+instead of yielding the CPU.
+
+Only active when the "Enable FPS Uncap" option is in effect.
+
+Higher values improve frame pacing at the cost of increased CPU usage.
+
+A value of '0' disables yielding. Don't use this unless you are playing on an extremely low-power device.
+]]
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_Enable"] = "Enable FPS Uncap"
 
 uiStrings["EEex_Options_TRANSLATION_UncapFPS_Enable_Description"] = [[
 Removes the engine's usual 30fps cap, allowing the game to render at your monitor's refresh rate.
 
 This improves the smoothness of viewport movement on high refresh rate monitors.
+]]
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_FPSLimit"] = "FPS Limit"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_FPSLimit_Description"] = [[
+Limits the uncapped FPS to the given value.
+
+This cannot lower the FPS below the "AI Speed" option.
 ]]
 
 uiStrings["EEex_Options_TRANSLATION_UncapFPS_RemoveMiddleMouseScrollMultiplier"] = "Remove Middle Mouse Scroll Multiplier"
