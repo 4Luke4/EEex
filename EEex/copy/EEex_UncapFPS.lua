@@ -24,7 +24,7 @@ EEex_Options_Register("EEex_UncapFPS_Enable", EEex_Options_Option.new({
 }))
 
 EEex_Options_Register("EEex_UncapFPS_FPSLimit", EEex_Options_Option.new({
-	["default"]  = 1000,
+	["default"]  = EEex.GetHighestRefreshRate(),
 	["type"]     = EEex_Options_EditType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1000 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Uncap FPS Limit" }),
