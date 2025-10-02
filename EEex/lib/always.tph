@@ -5,5 +5,5 @@ DEFINE_PATCH_FUNCTION SetINIString
 		key=~~
 		value=~~
 	BEGIN
-		REPLACE_EVALUATE ~\(\[[ %TAB%]*%section%[ %TAB%]*\][^\[\]]*[%WNL%]+[ %TAB%]*%key%[ %TAB%]*=[ %TAB%]*\)[^%WNL%]*~ BEGIN END ~%MATCH1%%value%~
+		REPLACE_EVALUATE ~\(\[[ %TAB%]*%section%[ %TAB%]*\][^][]*[%WNL%]+[ %TAB%]*%key%[ %TAB%]*=[ %TAB%]*\)[^%WNL%]*~ BEGIN END ~%MATCH1%%value%~
 END
