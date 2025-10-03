@@ -150,6 +150,29 @@
 		]]}
 	)
 
+	--[[
+	+-------------------------------------------------------------------------------------------------+
+	| Adjust Infinity_TransitionMenu()'s fade to last the correct amount of time with an uncapped FPS |
+	+-------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::Override_Infinity_TransitionMenu(L: lua_State*) -> int                       |
+	|   [EEex.dll] EEex::UncapFPS_Hook_HandleTransitionMenuFade()                                     |
+	+-------------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-Infinity_TransitionMenu()-FirstInstruction"), {"jmp #L(EEex::Override_Infinity_TransitionMenu)"})
+
+	EEex_HookConditionalJumpOnFailWithLabels(EEex_Label("Hook-drawTop()-HandleTransitionMenuFadeJmp"), 0, {
+		{"hook_integrity_watchdog_ignore_registers", {
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RCX, EEex_HookIntegrityWatchdogRegister.RDX,
+			EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10,
+			EEex_HookIntegrityWatchdogRegister.R11
+		}}},
+		{[[
+			call #L(EEex::UncapFPS_Hook_HandleTransitionMenuFade)
+			jmp #L(jmp_success)
+		]]}
+	)
+
 	EEex_EnableCodeProtection()
 
 end)()
