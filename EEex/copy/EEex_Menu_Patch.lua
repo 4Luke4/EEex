@@ -485,26 +485,11 @@
 	+------------------------------------------------------------------------------------+
 	| Track template instance destruction to clean up EEex data tied to uiItem instances |
 	+------------------------------------------------------------------------------------+
-	|   [EEex.dll] EEex::Menu_Hook_OnBeforeUITemplateFreed(pItem: uiItem*)               |
+	|   [EEex.dll] EEex::Menu_Hook_FreeUITemplate(pItem: uiItem*)                        |
 	+------------------------------------------------------------------------------------+
 	--]]
 
-	EEex_HookBeforeCallWithLabels(EEex_Label("Hook-Infinity_DestroyAnimation()-free()"), {
-		{"hook_integrity_watchdog_ignore_registers", {
-			EEex_HookIntegrityWatchdogRegister.RDX, EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9,
-			EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11
-		}}},
-		{[[
-			#MAKE_SHADOW_SPACE(8)
-			mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rcx
-
-															 ; rcx already pItem
-			call #L(EEex::Menu_Hook_OnBeforeUITemplateFreed)
-
-			mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
-			#DESTROY_SHADOW_SPACE
-		]]}
-	)
+	EEex_ReplaceCall(EEex_Label("Hook-Infinity_DestroyAnimation()-free()"), EEex_Label("EEex::Menu_Hook_FreeUITemplate"))
 
 	--[[
 	+-----------------------------------------------------------------------------------------------+

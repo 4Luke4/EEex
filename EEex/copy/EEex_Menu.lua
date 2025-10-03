@@ -221,6 +221,22 @@ function EEex_Menu_DestroyInjectedTemplate(menuName, templateName, instanceId)
 	EEex_Menu_HookGlobal_TemplateMenuOverride = nil
 end
 
+-- @bubb_doc { EEex_Menu_CreateTemplateFromCopy }
+--
+-- @summary: Copies and stores ``item`` as a UI template in ``menuName`` under ``templateName``.
+--
+-- @param { menuName / type=string }: The name of the menu where the newly created template is stored.
+--
+-- @param { templateName / type=string }: The name the newly created template is stored under.
+--
+-- @param { item / usertype=uiItem }: The UI item to copy and store as a template.
+--
+-- @return { usertype=uiItem }: The newly created template.
+
+function EEex_Menu_CreateTemplateFromCopy(menuName, templateName, item)
+	return EEex.CreateTemplateFromCopy(menuName, templateName, item)
+end
+
 -- A saner Infinity_InstanceAnimation()
 function EEex_Menu_InjectTemplateInstance(menuName, templateName, instanceId, x, y, w, h)
 	return EEex.InjectTemplateInstance(menuName, templateName, instanceId, x, y, w, h)

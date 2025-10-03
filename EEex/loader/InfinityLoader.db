@@ -724,6 +724,10 @@ Operations=ADD 17, PUSH, READ DWORD, ADD, ADD 4
 Pattern=4885C00F85DA000000
 Operations=ADD 12, PUSH, READ DWORD, ADD, ADD 4
 
+[g_overlayMenu]
+Pattern=488B5C24304885C9740A
+Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
 [g_pBaldurChitin]
 Pattern=48895C2430488B5E10
 Operations=ADD 30, PUSH, READ DWORD, ADD, ADD 4
@@ -1168,6 +1172,10 @@ Operations=ADD -24
 [drawSliceSide]
 Pattern=488945E7660F6E02
 Operations=ADD -33
+
+[eventMenu]
+Pattern=4889702055574154
+Operations=ADD -7
 
 [fadeSounds]
 Pattern=4885DB0F8426010000
@@ -2347,6 +2355,10 @@ Operations=ADD 25
 [Hook-uiDoFile()-FirstInstruction]
 Pattern=48894424304C8BC1
 Operations=ADD -42
+
+[Hook-uiEventMenuStack()-FirstInstruction]
+Pattern=488BE97424
+Operations=ADD -20
 
 [Hook-uiKillCapture()-FirstInstruction]
 Pattern=488B8A88100000

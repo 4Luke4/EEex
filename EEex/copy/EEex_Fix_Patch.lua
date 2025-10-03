@@ -358,6 +358,16 @@
 		]]}
 	)
 
+	--[[
+	+-------------------------------------------------------------------------------------------------+
+	| Fix capture functions that result in the capture item being deleted potentially causing a crash |
+	+-------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::Override_uiEventMenuStack(pEvent: SDL_Event*, pWindow: SDL_Rect*) -> bool    |
+	+-------------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-uiEventMenuStack()-FirstInstruction"), {"jmp #L(EEex::Override_uiEventMenuStack)"})
+
 	EEex_EnableCodeProtection()
 
 end)()
