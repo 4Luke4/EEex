@@ -77,8 +77,8 @@
 	EEex_HookBeforeRestoreWithLabels(EEex_Label("Hook-CGameArea::RenderZoomed()-FirstInstruction"), 0, 5, 5, {
 		{"stack_mod", 8},
 		{"hook_integrity_watchdog_ignore_registers", {
-			EEex_HookIntegrityWatchdogRegister.RDX, EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9,
-			EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RDX, EEex_HookIntegrityWatchdogRegister.R8,
+			EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11
 		}}},
 		{[[
 			#MAKE_SHADOW_SPACE(8)

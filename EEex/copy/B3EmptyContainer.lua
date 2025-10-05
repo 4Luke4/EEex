@@ -40,6 +40,7 @@ end
 			]]},
 		})
 	)
+	EEex_HookIntegrityWatchdog_IgnoreStackSizes(EEex_Label("Hook-CGameContainer::Render()-B3EmptyContainer"), {{0x20, 4}})
 
 	EEex_EnableCodeProtection()
 end)()
