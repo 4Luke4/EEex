@@ -173,6 +173,56 @@
 		]]}
 	)
 
+	--[[
+	+-------------------------------------------------------------------------------------------+
+	| Switching areas while the local map is open shouldn't cause the viewport / zoom to glitch |
+	+-------------------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::UncapFPS_Hook_OnAfterAreaActivated(pArea: CGameArea*)                  |
+	|   [EEex.dll] EEex::UncapFPS_Hook_OnBeforeAreaDeactivated(pArea: CGameArea*)               |
+	+-------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_HookRelativeJumpWithLabels(EEex_Label("Hook-CGameArea::OnActivation()-LastCall"), {
+		{"stack_mod", 8},
+		{"hook_integrity_watchdog_ignore_registers", {
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RCX, EEex_HookIntegrityWatchdogRegister.RDX,
+			EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10,
+			EEex_HookIntegrityWatchdogRegister.R11
+		}},
+		{"manual_continue", true}},
+		{[[
+			#MAKE_SHADOW_SPACE(8)
+			mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rdx
+
+			call #L(original)
+
+			mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)] ; pArea
+			call #L(EEex::UncapFPS_Hook_OnAfterAreaActivated)
+
+			#DESTROY_SHADOW_SPACE
+			#MANUAL_HOOK_EXIT(0)
+			ret
+		]]}
+	)
+
+	EEex_HookBeforeRestoreWithLabels(EEex_Label("Hook-CGameArea::OnDeactivation()-FirstInstruction"), 0, 6, 6, {
+		{"stack_mod", 8},
+		{"hook_integrity_watchdog_ignore_registers", {
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RDX, EEex_HookIntegrityWatchdogRegister.R8,
+			EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11
+		}}},
+		{[[
+			#MAKE_SHADOW_SPACE(8)
+			mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rcx
+
+																 ; rcx already pArea
+			call #L(EEex::UncapFPS_Hook_OnBeforeAreaDeactivated)
+
+			mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
+			#DESTROY_SHADOW_SPACE
+		]]}
+	)
+
 	EEex_EnableCodeProtection()
 
 end)()

@@ -1842,6 +1842,14 @@ Pattern=48895C2418574883EC20488BD9
 Pattern=41564883EC30488BF2
 Operations=ADD -12
 
+[Hook-CGameArea::OnActivation()-LastCall]
+Pattern=488BD7488B89E0100000
+Operations=ADD 24
+
+[Hook-CGameArea::OnDeactivation()-FirstInstruction]
+Pattern=48C781BC040000FFFFFFFF
+Operations=ADD -16
+
 [Hook-CGameArea::OnMouseMove()-OnAfterAreaEdgeScrollPossiblyStarted]
 Pattern=C7815C05000004000000
 Operations=ADD 26

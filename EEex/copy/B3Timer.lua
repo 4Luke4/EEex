@@ -169,12 +169,12 @@ function B3Timer_Private_Menu_Tick()
 					local curX = portraitInstanceCurX[i]
 					if not curX then
 						local startX = (B3Timer_Private_HugPortraits:get() == 1 and portraitArea.x or 0) - 3
-						
+
 						--Infinity UI++ modern hud compatibility
 						if RgUISkin and RgIsModernHud == 1 then
 							startX = portraitArea.x + portraitArea.w
 						end
-						
+
 						curX = startX
 						portraitInstanceStartX[i] = startX
 						portraitInstanceCurX[i] = curX
@@ -182,7 +182,7 @@ function B3Timer_Private_Menu_Tick()
 
 					local portraitEnabledFunc = instanceEntry.portraitEnabledFunc
 					if (not portraitEnabledFunc or portraitEnabledFunc()) and condition then
-					
+
 						--Infinity UI++ modern hud compatibility
 						local rgDif = 3
 						local rgWidth = nil
@@ -190,7 +190,7 @@ function B3Timer_Private_Menu_Tick()
 							rgDif = 2
 							rgWidth = 1
 						end
-						
+
 						instanceEntry.enabled = true
 						portraitInstanceCurX[i] = curX - rgDif
 						EEex_Menu_SetTemplateArea(B3Timer_Private_InjectingMenu, templateName, instanceEntry.id, curX, portraitArea.y, rgWidth, portraitArea.h)
@@ -210,13 +210,13 @@ function B3Timer_Private_Menu_Tick()
 				if curX ~= startX then
 					backgroundEntry.enabled = true
 					local portraitArea = backgroundEntry.portraitItem.area
-					
+
 					--Infinity UI++ modern hud compatibility
 					local rgDif = 1
 					if RgUISkin and RgIsModernHud == 1 then
 						rgDif = 0
 					end
-					
+
 					EEex_Menu_SetTemplateArea(B3Timer_Private_InjectingMenu, "B3Timer_Menu_TEMPLATE_Background", backgroundEntry.id, curX + 2, portraitArea.y, startX - curX + rgDif, portraitArea.h)
 				else
 					backgroundEntry.enabled = false
