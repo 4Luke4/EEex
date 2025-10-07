@@ -76,6 +76,16 @@ function EEex_Utility_FreeCPtrList(list)
 	EEex_FreeUD(list)
 end
 
+-- @bubb_doc { EEex_Utility_GetMicroseconds }
+--
+-- @summary: Returns the number of microseconds that have elapsed since EEex's initialization.
+--
+-- @return { type=number }: See summary.
+
+function EEex_Utility_GetMicroseconds()
+	return EEex.GetMicroseconds()
+end
+
 function EEex_Utility_GetOrCreate(t, key, default)
 	local v = t[key]
 	if v ~= nil then return v end

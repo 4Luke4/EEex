@@ -4043,17 +4043,16 @@ function EEex_Options_Private_KeybindAdvancePulse(instanceData)
 	local currentGreen = instanceData.currentGreen
 	local currentRed   = instanceData.currentRed
 
-	local dir         = instanceData.direction and 1 or -1
-	local stepPercent = EEex_CChitin.TIMER_UPDATES_PER_SECOND / instanceData.pulseMilliseconds
+	local direction = instanceData.direction
+	local directionSign = direction and 1 or -1
+
+	local curMicroseconds = EEex_Utility_GetMicroseconds()
+	local pulseElapsedMilliseconds = (curMicroseconds - instanceData.pulseStartMicroseconds) / 1000
+	local stepPercent = math.min(pulseElapsedMilliseconds / instanceData.pulseMilliseconds, 1)
 
 	local stepColor = function(startColor, currentColor, endColor)
-		local newColor = currentColor + dir * (endColor - startColor) * stepPercent
-		if endColor >= startColor then
-			newColor = math.max(startColor, math.min(newColor, endColor))
-		else
-			newColor = math.max(endColor, math.min(newColor, startColor))
-		end
-		return newColor
+		local extrema = direction and startColor or endColor
+		return extrema + directionSign * (endColor - startColor) * stepPercent
 	end
 
 	currentAlpha = stepColor( startAlpha, currentAlpha, endAlpha )
@@ -4067,14 +4066,9 @@ function EEex_Options_Private_KeybindAdvancePulse(instanceData)
 	instanceData.currentRed   = currentRed
 	instanceData.currentColor = EEex_Options_Private_PackColor(currentAlpha, currentBlue, currentGreen, currentRed)
 
-	if instanceData.direction then
-		if currentAlpha == endAlpha and currentRed == endRed and currentGreen == endGreen and currentBlue == endBlue then
-			instanceData.direction = false
-		end
-	else
-		if currentAlpha == startAlpha and currentRed == startRed and currentGreen == startGreen and currentBlue == startBlue then
-			instanceData.direction = true
-		end
+	if stepPercent == 1 then
+		instanceData.direction = not direction
+		instanceData.pulseStartMicroseconds = curMicroseconds
 	end
 end
 
@@ -4140,6 +4134,7 @@ end
 function EEex_Options_Private_KeybindOnActivateFocus(instanceData)
 	EEex_Options_Private_KeybindUpdateTextFromRecorded(instanceData)
 	EEex_Key_EnterCaptureMode(EEex_Options_Private_KeybindOnCaptureKey)
+	instanceData.pulseStartMicroseconds = EEex_Utility_GetMicroseconds()
 end
 
 EEex_Options_Private_KeybindModifierKeys = {
