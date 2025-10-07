@@ -1042,6 +1042,21 @@ Type=LIST
 ;-- Engine Functions --
 ;----------------------
 
+[CGameArea::OnActivation]
+Pattern=488BF948895C2460
+Operations=ADD -17
+
+[CGameArea::OnDeactivation]
+Pattern=48C781BC040000FFFFFFFF
+Operations=ADD -16
+
+[CGameDialogSprite::EndDialog]
+Pattern=C7415400000000C74158FFFFFFFF
+
+[CGameDialogSprite::ResetDialogStates]
+Pattern=574883EC20488BD9B918000000
+Operations=ADD -5
+
 [CGameEffect::CheckSave]
 Pattern=4889442470410FB600
 Operations=ADD -28
@@ -1058,9 +1073,23 @@ Operations=ADD -30
 Pattern=488BF9B930000000
 Operations=ADD -10
 
+[CGameSave::SetInputMode]
+Pattern=81FA6E010100
+Operations=ADD -15
+
 [CGameSprite::Construct(byte*,int,ushort,uint,ushort,ushort,uint,CPoint,ushort,int)]
 Pattern=488D6C24F94881EC00010000
 Operations=ADD -16
+
+[CInfGame::GetArea]
+Pattern=574883EC20488BF2488BE9
+Operations=ADD -15
+
+[CInfGame::SetVisibleArea]
+Pattern=889190650000
+
+[CInfinity::GetViewPosition]
+Pattern=8B41608902
 
 [CNetwork::ThreadLoop]
 Pattern=405541564883EC28
@@ -1073,9 +1102,16 @@ Operations=ADD -49
 Pattern=41564883EC3083795800
 Operations=ADD -15
 
+[CResRef::CopyToString]
+Pattern=4889442430488B01
+Operations=ADD -14
+
 [CString::Format]
 Pattern=448BC54889442420488D4C2420
 Operations=ADD 14, PUSH, READ DWORD, ADD, ADD 4
+
+[CTimerWorld::StartTime]
+Pattern=C6410401
 
 [CVidMode::Flip]
 Pattern=80B97001000000
@@ -1226,6 +1262,10 @@ Pattern=48895C2410574883EC20488BF94885C9
 Pattern=4533C033D2488BF9
 Operations=ADD -10
 
+[uiSetHidden]
+Pattern=488B89901000004C8D442430
+Operations=ADD -33
+
 [uiVariantAsInt]
 Pattern=C3833900
 Operations=ADD -15
@@ -1257,12 +1297,20 @@ Operations=ADD 16, PUSH, READ DWORD, ADD, ADD 4
 Pattern=744D8B5E48
 Operations=ADD 16, PUSH, READ DWORD, ADD, ADD 4
 
+[CMessageExitDialogMode::VFTable]
+Pattern=0FB686580A0000
+Operations=ADD 10, PUSH, READ DWORD, ADD, ADD 4
+
 [CMessageSetDirection::VFTable]
 Pattern=8B4B48498B06
 Operations=ADD 15, PUSH, READ DWORD, ADD, ADD 4
 
 [CMessageSetTrigger::VFTable]
 Pattern=488BFA44894908
+Operations=ADD -7, PUSH, READ DWORD, ADD, ADD 4
+
+[CMessageUpdateMachineState::VFTable]
+Pattern=894A0C894A08C74210FFFFFFFF
 Operations=ADD -7, PUSH, READ DWORD, ADD, ADD 4
 
 [CMessageUpdateReaction::VFTable]
@@ -2256,6 +2304,10 @@ Operations=ADD -20
 [Hook-CScreenWorld::AsynchronousUpdate()-AutoZoomJmp]
 Pattern=4C8BF1448BFF
 Operations=ADD 52
+
+[Hook-CScreenWorld::EndDialog()-FirstInstruction]
+Pattern=55564883EC30
+Operations=ADD -2
 
 [Hook-CScreenWorld::EngineDeactivated()-FirstCall]
 Pattern=48895C2420574883EC30488BD9

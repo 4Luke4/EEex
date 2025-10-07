@@ -223,6 +223,16 @@
 		]]}
 	)
 
+	--[[
+	+---------------------------------------------------------------------------------------+
+	| Fix dialog autoscroll resulting in the viewport being incorrectly fit near area edges |
+	+---------------------------------------------------------------------------------------+
+	|   [EEex.dll] CScreenWorld::Override_EndDialog(bForceExecution: byte, fullEnd: byte)   |
+	+---------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-CScreenWorld::EndDialog()-FirstInstruction"), {"jmp #L(CScreenWorld::Override_EndDialog)"})
+
 	EEex_EnableCodeProtection()
 
 end)()
