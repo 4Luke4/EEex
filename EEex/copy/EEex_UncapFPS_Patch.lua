@@ -59,14 +59,23 @@
 	EEex_JITAt(EEex_Label("Hook-CScreenWorld::StartScroll()-FirstInstruction"), {"jmp #L(CScreenWorld::Override_StartScroll)"})
 
 	--[[
-	+------------------------------------------------------------------------------------------+
-	| Override local map auto-zoom to use exact (finer-grained) movement, improving smoothness |
-	+------------------------------------------------------------------------------------------+
-	|   [EEex.dll] CScreenWorld::Override_ResetZoom()                                          |
-	|   [EEex.dll] CScreenWorld::Override_ZoomToMap(bOverwriteOriginal: bool)                  |
-	|   [EEex.dll] EEex::UncapFPS_Hook_HandleAreaAutoZoom()                                    |
-	+------------------------------------------------------------------------------------------+
+	+-------------------------------------------------------------------------------------------------------------+
+	| Override local map auto-zoom to use exact (finer-grained) movement, improving smoothness                    |
+	+-------------------------------------------------------------------------------------------------------------+
+	| Also externalizes keyboard scrolling state resolution, fixing several bugs, including:                      |
+	|   * The local map's keyboard scrolling being completely broken                                              |
+	|   * Keyboard scrolling states derived from multiple keys not properly resolving when keys are released      |
+	|   * Keyboard scrolling not automatically taking effect when any blockers (e.g. dialog, cutscenes) are ended |
+	+-------------------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] CScreenWorld::Override_ResetZoom()                                                             |
+	|   [EEex.dll] CScreenWorld::Override_ZoomToMap(bOverwriteOriginal: bool)                                     |
+	|   [EEex.dll] EEex::UncapFPS_Hook_OnBeforeAreaRendered()                                                     |
+	|   [Lua] EEex_UncapFPS_LuaHook_CheckKeyboardScroll()                                                         |
+	+-------------------------------------------------------------------------------------------------------------+
 	--]]
+
+	-- Disable existing local map keyboard scroll handling
+	EEex_ForceJump(EEex_Label("Hook-CScreenMap::TimerAsynchronousUpdate()-ScrollHandlingJmp"))
 
 	-- Disable the vanilla local map auto-zoom logic
 	EEex_ForceJump(EEex_Label("Hook-CScreenWorld::AsynchronousUpdate()-AutoZoomJmp"))
@@ -84,7 +93,7 @@
 			#MAKE_SHADOW_SPACE(8)
 			mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rcx
 
-			call #L(EEex::UncapFPS_Hook_HandleAreaAutoZoom)
+			call #L(EEex::UncapFPS_Hook_OnBeforeAreaRendered)
 
 			mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
 			#DESTROY_SHADOW_SPACE

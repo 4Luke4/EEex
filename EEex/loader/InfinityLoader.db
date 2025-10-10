@@ -2301,6 +2301,10 @@ Operations=ADD -5
 Pattern=4889442458488B02
 Operations=ADD -20
 
+[Hook-CScreenMap::TimerAsynchronousUpdate()-ScrollHandlingJmp]
+Pattern=83F8080F848F000000
+Operations=ADD 3
+
 [Hook-CScreenWorld::AsynchronousUpdate()-AutoZoomJmp]
 Pattern=4C8BF1448BFF
 Operations=ADD 52

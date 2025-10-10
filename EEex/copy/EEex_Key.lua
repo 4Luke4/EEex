@@ -910,8 +910,8 @@ EEex_Key_PressedListeners = {}
 -- | key  | SDL_Keycode | The key that was pressed. |
 -- +------+-------------+---------------------------+
 
-function EEex_Key_AddPressedListener(func)
-	table.insert(EEex_Key_PressedListeners, func)
+function EEex_Key_AddPressedListener(func, bHandlesRepeats)
+	table.insert(EEex_Key_PressedListeners, {func, bHandlesRepeats})
 end
 
 EEex_Key_ReleasedListeners = {}
@@ -985,14 +985,13 @@ function EEex_Key_Private_OnPressed(key, bRepeat)
 	EEex_Key_IsDownMap[key] = true
 
 	if not bRepeat then
-
 		EEex_Key_Private_PressedStackSize = EEex_Key_Private_PressedStackSize + 1
 		EEex_Key_Private_PressedStack[EEex_Key_Private_PressedStackSize] = key
+	end
 
-		for i, func in ipairs(EEex_Key_PressedListeners) do
-			if func(key) then
-				return true -- Consume event
-			end
+	for _, entry in ipairs(EEex_Key_PressedListeners) do
+		if (not bRepeat or entry[2]) and entry[1](key, bRepeat) then
+			return true -- Consume event
 		end
 	end
 end
