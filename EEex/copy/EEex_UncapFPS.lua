@@ -30,7 +30,7 @@ EEex_Options_Register("EEex_UncapFPS_Enable", EEex_Options_Option.new({
 EEex_Options_Register("EEex_UncapFPS_FPSLimit", EEex_Options_Option.new({
 	["default"]  = EEex.GetHighestRefreshRate(),
 	["type"]     = EEex_Options_EditType.new(),
-	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1000 }),
+	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 1, ["max"] = EEex.GetHighestRefreshRate() }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Uncap FPS Limit" }),
 	["onChange"] = function(self) EEex.UncapFPS_FPSLimit = self:get() end,
 }))
@@ -213,6 +213,7 @@ end
 -- Listeners --
 ---------------
 
+-- Block vanilla handling of scroll keys by consuming the key down/repeat/up events
 function EEex_UncapFPS_Private_HandleScrollKeyEvent(key)
 
 	local chitin = EngineGlobals.g_pBaldurChitin
@@ -244,6 +245,105 @@ end
 
 EEex_Key_AddPressedListener(EEex_UncapFPS_Private_HandleScrollKeyEvent, true)
 EEex_Key_AddReleasedListener(EEex_UncapFPS_Private_HandleScrollKeyEvent)
+
+-- Fix the memorization sparkle speed with uncapped fps
+EEex_Menu_AddMainFileLoadedListener(function()
+
+	----------------------
+	-- Patch Validation --
+	----------------------
+
+	if     type(createMageMemorizationSparkle)   ~= "function"
+		or type(createPriestMemorizationSparkle) ~= "function"
+		or type(memorizationFlashes)             ~= "table"
+		or type(updateMemorizationSparkles)      ~= "function"
+	then
+		return
+	end
+
+	local getTemplate = function(templateName)
+		local templateHolder = EEex_Menu_GetItem(templateName)
+		return templateHolder ~= nil and templateHolder.uiTemplate.item or nil
+	end
+
+	local mageTemplate = getTemplate("TEMPLATE_mageMemorizationSparkle")
+	if mageTemplate == nil then return end
+
+	local priestTemplate = getTemplate("TEMPLATE_priestMemorizationSparkle")
+	if priestTemplate == nil then return end
+
+	----------------------------------------------------------
+	-- Wrap creation functions to flag first sparkle render --
+	----------------------------------------------------------
+
+	local wrapCreate = function(existingFuncName)
+		local existingFunc = _G[existingFuncName]
+		_G[existingFuncName] = function(...)
+			memorizationFlashes[currentAnimationID].firstRender = true
+			return existingFunc(...)
+		end
+	end
+
+	wrapCreate("createMageMemorizationSparkle")
+	wrapCreate("createPriestMemorizationSparkle")
+
+	-------------------------------------------------------------------------------------------------------------------------------------
+	-- Modify templates to use `alpha` function for animation update                                                                   --
+	-------------------------------------------------------------------------------------------------------------------------------------
+	-- Vanilla uses `enabled` for this purpose, which is a bad idea, since `enabled` is called in non-render instances                 --
+	-------------------------------------------------------------------------------------------------------------------------------------
+	-- This also changes the update method to operate on a single sparkle instance at a time, instead of the weird vanilla bulk update --
+	-------------------------------------------------------------------------------------------------------------------------------------
+
+	-- Disable vanilla sparkle update routine
+	updateMemorizationSparkles = function() end
+
+	local numFrames = 7
+	local frameDuration = 33333
+	local totalDuration = numFrames * frameDuration
+
+	local wrapTemplate = function(existingTemplate)
+
+		local existingAlpha = EEex_Menu_GetItemVariant(existingTemplate.alpha)
+
+		EEex_Menu_SetItemVariant(existingTemplate.reference_alpha, function()
+
+			local memorizationFlashInstance = memorizationFlashes[instanceId]
+
+			if memorizationFlashInstance[1] == true then
+
+				local curTime = EEex_Utility_GetMicroseconds()
+
+				if memorizationFlashInstance.firstRender then
+					memorizationFlashInstance.firstRender = false
+					memorizationFlashInstance.startTime = curTime
+				end
+
+				local curDuration = curTime - memorizationFlashInstance.startTime
+				local percentage = math.min(curDuration / totalDuration, 1)
+
+				if percentage < 1 then
+					memorizationFlashInstance[2] = math.floor(numFrames * percentage)
+				else
+					memorizationFlashInstance[1] = false
+					memorizationFlashInstance[2] = 0
+					memorizationFlashInstance[3] = true
+				end
+			end
+
+			if type(existingAlpha) == "function" then
+				return existingAlpha()
+			elseif existingAlpha ~= nil then
+				return existingAlpha
+			else
+				return 255
+			end
+		end)
+	end
+
+	wrapTemplate(mageTemplate)
+	wrapTemplate(priestTemplate)
+end)
 
 -----------
 -- Hooks --
