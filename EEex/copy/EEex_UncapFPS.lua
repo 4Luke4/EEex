@@ -136,14 +136,19 @@ end
 
 function EEex_UncapFPS_Private_IsScrollAccepted(game)
 
-	if worldScreen ~= e:GetActiveEngine() and mapScreen ~= e:GetActiveEngine() then
-		-- Not in world screen
+	if Infinity_TextEditHasFocus() ~= 0 then
+		-- Don't scroll if a text edit is focused, (e.g. the debug console)
 		return false
 	end
 
-	local inputMode = game.m_gameSave.m_inputMode
+	local activeEngine = e:GetActiveEngine()
+	if activeEngine ~= worldScreen and activeEngine ~= mapScreen then
+		-- Current engine doesn't accept keyboard scrolling
+		return false
+	end
 
-	-- Not in cutscene or dialog
+	-- Ensure not in cutscene or dialog mode
+	local inputMode = game.m_gameSave.m_inputMode
 	return EEex_BAnd(inputMode - 0x1016E, 0xFFFDFFFF) ~= 0 and EEex_BAnd(inputMode, 0x801) ~= 0
 end
 
