@@ -2270,6 +2270,14 @@ Pattern=48895C241855565741564157488BEC4883EC30
 Pattern=4D894B20534154
 Operations=ADD -3
 
+[Hook-CInfinity::Render()-HandleScreenShakeJmp]
+Pattern=83BB6C040000000F84FE000000
+Operations=ADD 40
+
+[Hook-CInfinity::Render()-HandleScreenShakePostJmp]
+Pattern=80B9A43F000000747B
+Operations=ADD 16
+
 [Hook-CInfinity::Scroll()-FirstInstruction]
 Pattern=4889542410555356574154415541564157488BEC
 

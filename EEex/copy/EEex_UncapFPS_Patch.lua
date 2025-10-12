@@ -242,6 +242,44 @@
 
 	EEex_JITAt(EEex_Label("Hook-CScreenWorld::EndDialog()-FirstInstruction"), {"jmp #L(CScreenWorld::Override_EndDialog)"})
 
+	--[[
+	+-------------------------------------------------------------------------------+
+	| Fix duration of screen shakes (e.g. from critical hits) with uncapped fps     |
+	+-------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::UncapFPS_Hook_HandleScreenShake(pInfinity: CInfinity*)     |
+	|   [EEex.dll] EEex::UncapFPS_Hook_HandleScreenShakePost(pInfinity: CInfinity*) |
+	+-------------------------------------------------------------------------------+
+	--]]
+
+	EEex_HookConditionalJumpOnFailWithLabels(EEex_Label("Hook-CInfinity::Render()-HandleScreenShakeJmp"), 0, {
+		{"hook_integrity_watchdog_ignore_registers", {
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RCX, EEex_HookIntegrityWatchdogRegister.RDX,
+			EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10,
+			EEex_HookIntegrityWatchdogRegister.R11
+		}}},
+		{[[
+			mov rcx, rbx ; pInfinity
+			call #L(EEex::UncapFPS_Hook_HandleScreenShake)
+			jmp #L(jmp_success)
+		]]}
+	)
+
+	EEex_HookConditionalJumpOnFailWithLabels(EEex_Label("Hook-CInfinity::Render()-HandleScreenShakePostJmp"), 3, {
+		{"hook_integrity_watchdog_ignore_registers", {
+			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RCX, EEex_HookIntegrityWatchdogRegister.RDX,
+			EEex_HookIntegrityWatchdogRegister.R8, EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10,
+			EEex_HookIntegrityWatchdogRegister.R11
+		}}},
+		{[[
+			mov rcx, rbx ; pInfinity
+			call #L(EEex::UncapFPS_Hook_HandleScreenShakePost)
+			jmp #L(jmp_success)
+		]]}
+	)
+
+	-- Debug: Make hits always crit in BG2:EE v2.6.6.0
+	--EEex_JITAt(0x14039E594, {"#REPEAT(6,nop #ENDL)"})
+
 	EEex_EnableCodeProtection()
 
 end)()
