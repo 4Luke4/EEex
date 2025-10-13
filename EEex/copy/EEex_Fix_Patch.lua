@@ -368,6 +368,19 @@
 
 	EEex_JITAt(EEex_Label("Hook-uiEventMenuStack()-FirstInstruction"), {"jmp #L(EEex::Override_uiEventMenuStack)"})
 
+	--[[
+	+--------------------------------------------------------------------------------------------------------------------+
+	| Fix closing the local area map with a double click resulting in the world screen responding to the button up event |
+	+--------------------------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] CScreenMap::Override_OnLButtonDblClk(cPoint: CPoint)                                                  |
+	|   [Lua] EEex_Fix_LuaHook_OnLocalMapDoubleClick()                                                                   |
+	+--------------------------------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_SetSegmentProtection(".rdata", 0x4) -- PAGE_READWRITE
+	EEex_WritePtr(EEex_UDToPtr(EEex_CScreenMap.VFTable.reference_OnLButtonDblClk), EEex_Label("CScreenMap::Override_OnLButtonDblClk"))
+	EEex_SetSegmentProtection(".rdata", 0x2) -- PAGE_READONLY
+
 	EEex_EnableCodeProtection()
 
 end)()

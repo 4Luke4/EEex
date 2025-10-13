@@ -1042,6 +1042,10 @@ Type=LIST
 ;-- Engine Functions --
 ;----------------------
 
+[CBaldurEngine::OnLeftPanelButtonClick]
+Pattern=BB010000007576
+Operations=ADD -26
+
 [CGameArea::OnActivation]
 Pattern=488BF948895C2460
 Operations=ADD -17
@@ -1392,6 +1396,10 @@ Operations=ADD 25, PUSH, READ DWORD, ADD, ADD 4
 [CProjectileTravelDoor::VFTable]
 Pattern=488D8B18040000
 Operations=ADD -38, PUSH, READ DWORD, ADD, ADD 4
+
+[CScreenMap::VFTable]
+Pattern=488D8E18070000
+Operations=ADD -83, PUSH, READ DWORD, ADD, ADD 4
 
 ;------------------------------------------
 ;-- Functions Referenced by Lua Bindings --

@@ -50,3 +50,13 @@ EEex_GameState_AddInitializedListener(function()
 		return str:find("\\") or oldNeedsEscape(str)
 	end
 end)
+
+------------------------------------------------------------------------------------------------------------------------
+-- Fix closing the local area map with a double click resulting in the world screen responding to the button up event --
+------------------------------------------------------------------------------------------------------------------------
+
+EEex_Fix_Private_IgnoreLButtonUp = false
+
+function EEex_Fix_LuaHook_OnLocalMapDoubleClick()
+	EEex_Fix_Private_IgnoreLButtonUp = true
+end

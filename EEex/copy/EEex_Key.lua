@@ -1019,5 +1019,8 @@ function EEex_Key_Hook_AfterEventsPoll(event)
 		return EEex_Key_Private_OnPressed(event.key.keysym.sym, event.key["repeat"] ~= 0)
 	elseif event.type == SDL_EventType.SDL_KEYUP then
 		return EEex_Key_Private_OnReleased(event.key.keysym.sym)
+	elseif event.type == SDL_EventType.SDL_MOUSEBUTTONUP and event.button.button == 1 and EEex_Fix_Private_IgnoreLButtonUp then
+		EEex_Fix_Private_IgnoreLButtonUp = false
+		return true
 	end
 end
