@@ -381,6 +381,16 @@
 	EEex_WritePtr(EEex_UDToPtr(EEex_CScreenMap.VFTable.reference_OnLButtonDblClk), EEex_Label("CScreenMap::Override_OnLButtonDblClk"))
 	EEex_SetSegmentProtection(".rdata", 0x2) -- PAGE_READONLY
 
+	--[[
+	+------------------------------------------------------------------------------------+
+	| Fix floating text not maintaining its size / alignment when the viewport is zoomed |
+	+------------------------------------------------------------------------------------+
+	|   [EEex.dll] CGameText::Override_Render(pArea: CGameArea*, pVidMode: CVidMode*)    |
+	+------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-CGameText::Render()-FirstInstruction"), {"jmp #L(CGameText::Override_Render)"})
+
 	EEex_EnableCodeProtection()
 
 end)()

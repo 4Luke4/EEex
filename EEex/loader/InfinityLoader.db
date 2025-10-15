@@ -482,6 +482,9 @@ Operations=ADD 21, PUSH, READ DWORD, ADD, ADD 4
 Pattern=75044C8D4108
 Operations=ADD -3
 
+[CObList::RemoveAll]
+Pattern=48895C2408574883EC2033FF488BD9897918
+
 [CObList::RemoveAt]
 Pattern=4883EC20488BD9488B0A
 Operations=ADD -2
@@ -593,6 +596,17 @@ Pattern=48895C240848895424105556574154415541564157488BEC4883EC70
 Pattern=4155415641574883EC304C8BF9
 Operations=ADD -10
 
+[CVidFont::GetStringHeight]
+Pattern=48896C24184889742420574883EC30488BF1
+
+[CVidFont::GetStringLength]
+Pattern=4883EC30488B7910
+Operations=ADD -14
+
+[CVidFont::RenderTextWrap]
+Pattern=56574881ECC8000000
+Operations=ADD -5
+
 [CVisualEffect::Load]
 Pattern=4055534154415541564157
 
@@ -664,6 +678,10 @@ Operations=ADD 46, PUSH, READ DWORD, ADD, ADD 4
 Pattern=E988040000
 Operations=ADD 15, PUSH, READ DWORD, ADD, ADD 4
 
+[CChitin::ENGINE_MODE]
+Pattern=83F8017535
+Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
 [CChitin::TIMER_UPDATES_PER_SECOND]
 Pattern=0F57C9488B9090100000
 Operations=ADD 19, PUSH, READ DWORD, ADD, ADD 4
@@ -720,6 +738,10 @@ Operations=ADD 7, PUSH, READ DWORD, ADD, ADD 4
 Pattern=4963074883F840
 Operations=ADD 17, PUSH, READ DWORD, ADD, ADD 4
 
+[g_letters]
+Pattern=0FB685F8000000
+Operations=ADD 86, PUSH, READ DWORD, ADD, ADD 4
+
 [g_lua]
 Pattern=4885C00F85DA000000
 Operations=ADD 12, PUSH, READ DWORD, ADD, ADD 4
@@ -731,6 +753,10 @@ Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
 [g_pBaldurChitin]
 Pattern=48895C2430488B5E10
 Operations=ADD 30, PUSH, READ DWORD, ADD, ADD 4
+
+[gl]
+Pattern=4585C00F8485000000
+Operations=ADD 19, PUSH, READ DWORD, ADD, ADD 4
 
 [lang]
 ExeSwitch=1
@@ -1054,6 +1080,10 @@ Operations=ADD -17
 Pattern=48C781BC040000FFFFFFFF
 Operations=ADD -16
 
+[CGameArea::Render]
+Pattern=4889451780B90302000000
+Operations=ADD -28
+
 [CGameDialogSprite::EndDialog]
 Pattern=C7415400000000C74158FFFFFFFF
 
@@ -1102,6 +1132,10 @@ Pattern=405541564883EC28
 Pattern=488BF24889542468
 Operations=ADD -49
 
+[CResFont::GetFont]
+Pattern=488BD94885C9742F
+Operations=ADD -6
+
 [CResPVR::Demand]
 Pattern=41564883EC3083795800
 Operations=ADD -15
@@ -1117,6 +1151,10 @@ Operations=ADD 14, PUSH, READ DWORD, ADD, ADD 4
 [CTimerWorld::StartTime]
 Pattern=C6410401
 
+[CVidMode::FillRect3d]
+Pattern=4883EC508B4208
+Operations=ADD -11
+
 [CVidMode::Flip]
 Pattern=80B97001000000
 Operations=ADD -10
@@ -1128,6 +1166,10 @@ Operations=ADD -10
 [DrawAlpha]
 Pattern=83CF02448BCD
 Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawBeginScaled]
+Pattern=8B84248800000089442438
+Operations=ADD -11
 
 [DrawBindTexture]
 Pattern=4533C94533C08BD78BCE
@@ -1152,6 +1194,18 @@ Operations=ADD 20, PUSH, READ DWORD, ADD, ADD 4
 [DrawEnable]
 Pattern=4883EC28B9E20B0000
 Operations=ADD 10, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawEndScaled]
+Pattern=488B9E100F0000
+Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawOrtho11Begin]
+Pattern=488945EF448B6D6F
+Operations=ADD 21, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawOrtho11End]
+Pattern=C7442438FFFFFFFF4C8D4D0F
+Operations=ADD 48, PUSH, READ DWORD, ADD, ADD 4
 
 [DrawPopState]
 Pattern=0F287424604C8B742470
@@ -1197,6 +1251,18 @@ Operations=ADD -10
 Pattern=488DAC240870FEFF
 Operations=ADD -4
 
+[XScreenToZoomed]
+Pattern=66410F6E8E8C060000
+Operations=ADD 35, PUSH, READ DWORD, ADD, ADD 4
+
+[YScreenToZoomed]
+Pattern=84C00F8488000000
+Operations=ADD 40, PUSH, READ DWORD, ADD, ADD 4
+
+[applycolor]
+Pattern=8B571C8B4F18
+Operations=ADD 7, PUSH, READ DWORD, ADD, ADD 4
+
 [bootstrapLua]
 Pattern=B918190000
 Operations=ADD -31, PUSH, READ DWORD, ADD, ADD 4
@@ -1216,6 +1282,9 @@ Operations=ADD -20, PUSH, READ DWORD, ADD, ADD 4
 [dimmServiceFromMemory]
 Pattern=41564883EC204963E8
 Operations=ADD -20
+
+[drawLetters]
+Pattern=4C8BDC555356574155
 
 [drawSlice]
 Pattern=488945F0448B4904
@@ -2239,6 +2308,9 @@ Operations=ADD 35
 [Hook-CGameSprite::WildSpell()-operator_new()-SPFLESHS]
 Pattern=418D4D37
 Operations=ADD 4
+
+[Hook-CGameText::Render()-FirstInstruction]
+Pattern=40574881ECB0000000
 
 [Hook-CImmunitiesEffect::OnList()-Entry]
 Pattern=488B7108488BFA4885F6

@@ -83,22 +83,7 @@
 	EEex_JITAt(EEex_Label("Hook-CScreenWorld::ResetZoom()-FirstInstruction"), {"jmp #L(CScreenWorld::Override_ResetZoom)"})
 	EEex_JITAt(EEex_Label("Hook-CScreenWorld::ZoomToMap()-FirstInstruction"), {"jmp #L(CScreenWorld::Override_ZoomToMap)"})
 
-	EEex_HookBeforeRestoreWithLabels(EEex_Label("Hook-CGameArea::RenderZoomed()-FirstInstruction"), 0, 5, 5, {
-		{"stack_mod", 8},
-		{"hook_integrity_watchdog_ignore_registers", {
-			EEex_HookIntegrityWatchdogRegister.RAX, EEex_HookIntegrityWatchdogRegister.RDX, EEex_HookIntegrityWatchdogRegister.R8,
-			EEex_HookIntegrityWatchdogRegister.R9, EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11
-		}}},
-		{[[
-			#MAKE_SHADOW_SPACE(8)
-			mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rcx
-
-			call #L(EEex::UncapFPS_Hook_OnBeforeAreaRendered)
-
-			mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
-			#DESTROY_SHADOW_SPACE
-		]]}
-	)
+	EEex_JITAt(EEex_Label("Hook-CGameArea::RenderZoomed()-FirstInstruction"), {"jmp #L(CGameArea::Override_RenderZoomed)"})
 
 	--[[
 	+----------------------------------------------------------------------------------------------------------------------------+
