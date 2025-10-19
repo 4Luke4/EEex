@@ -354,12 +354,9 @@
 
 	EEex_HookAfterCallWithLabels(EEex_Label("Hook-CChitin::OnResizeWindow()-B3Scale"), {
 		{"hook_integrity_watchdog_ignore_registers", {EEex_HookIntegrityWatchdogRegister.RAX}}},
-		EEex_FlattenTable({[[
-			#MAKE_SHADOW_SPACE(32)
-			]], EEex_GenLuaCall("EEex_Menu_Hook_OnWindowSizeChanged"), [[
-			call_error:
-			#DESTROY_SHADOW_SPACE
-		]]})
+		{[[
+			call #L(EEex::UncapFPS_Hook_OnAfterWindowResized)
+		]]}
 	)
 
 	--[[

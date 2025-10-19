@@ -758,6 +758,14 @@ Operations=ADD 30, PUSH, READ DWORD, ADD, ADD 4
 Pattern=4585C00F8485000000
 Operations=ADD 19, PUSH, READ DWORD, ADD, ADD 4
 
+[glGetUniformLocation]
+Pattern=890385C075064883C420
+Operations=ADD 23, PUSH, READ DWORD, ADD, ADD 4
+
+[glUniform1i]
+Pattern=8B4B1085C9
+Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
 [lang]
 ExeSwitch=1
 ExeSwitchAlias=SiegeOfDragonspear.exe:Baldur.exe
@@ -1167,6 +1175,10 @@ Operations=ADD -10
 Pattern=83CF02448BCD
 Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
 
+[DrawBegin]
+Pattern=488B1FB902000000
+Operations=ADD 38, PUSH, READ DWORD, ADD, ADD 4
+
 [DrawBeginScaled]
 Pattern=8B84248800000089442438
 Operations=ADD -11
@@ -1187,6 +1199,10 @@ Operations=ADD -9, PUSH, READ DWORD, ADD, ADD 4
 Pattern=B916878FA0
 Operations=ADD 6, PUSH, READ DWORD, ADD, ADD 4
 
+[DrawColorTone]
+Pattern=83459002
+Operations=ADD 22, PUSH, READ DWORD, ADD, ADD 4
+
 [DrawDisable]
 Pattern=488B9C2460030000
 Operations=ADD 20, PUSH, READ DWORD, ADD, ADD 4
@@ -1194,6 +1210,10 @@ Operations=ADD 20, PUSH, READ DWORD, ADD, ADD 4
 [DrawEnable]
 Pattern=4883EC28B9E20B0000
 Operations=ADD 10, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawEnd]
+Pattern=453BAEC0100000
+Operations=ADD 14, PUSH, READ DWORD, ADD, ADD 4
 
 [DrawEndScaled]
 Pattern=488B9E100F0000
@@ -1219,6 +1239,10 @@ Operations=ADD 16, PUSH, READ DWORD, ADD, ADD 4
 Pattern=4883EC300F1001
 Operations=ADD -2
 
+[DrawTexCoord]
+Pattern=448B742420418BC6
+Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
 [DrawTransformToScreen]
 Pattern=81E1FF0F00004D896B20
 Operations=ADD 60, PUSH, READ DWORD, ADD, ADD 4
@@ -1226,6 +1250,10 @@ Operations=ADD 60, PUSH, READ DWORD, ADD, ADD 4
 [DrawTransformToScreenH]
 Pattern=F30F2CC0488D5580
 Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
+
+[DrawVertex]
+Pattern=448B742420418BC6
+Operations=ADD 41, PUSH, READ DWORD, ADD, ADD 4
 
 [SDL_Delay]
 Pattern=55565741544156488BEC
@@ -2422,6 +2450,14 @@ Operations=ADD -6
 
 [Hook-CScreenWorld::ZoomToMap()-FirstInstruction]
 Pattern=488BC441544157
+
+[Hook-CVidMode::SetDisplayMode()-DrawInit()]
+Pattern=84C0750733C0
+Operations=ADD -5
+
+[Hook-CVidTile::RenderTexture()-FirstInstruction]
+Pattern=448948204883EC48
+Operations=ADD -3
 
 [Hook-CVisibilityMap::AddCharacter()-FirstInstruction]
 Pattern=415441564157488BEC4883EC400FB64550

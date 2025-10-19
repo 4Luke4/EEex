@@ -414,7 +414,7 @@ function EEex_Menu_Hook_OnBeforeUIItemRender(item)
 	end
 end
 
-function EEex_Menu_Hook_OnWindowSizeChanged()
+function EEex_Menu_LuaHook_OnWindowSizeChanged()
 
 	local sdlWindow = EngineGlobals.g_pBaldurChitin.cVideo.pCurrentMode.m_pWindow
 	local sdlWindowFlags = EngineGlobals.SDL_GetWindowFlags(sdlWindow)

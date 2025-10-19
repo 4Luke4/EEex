@@ -265,6 +265,39 @@
 	-- Debug: Make hits always crit in BG2:EE v2.6.6.0
 	--EEex_JITAt(0x14039E594, {"#REPEAT(6,nop #ENDL)"})
 
+	--[[
+	+--------------------------------------------------------------------------+
+	| Install hook after the renderer (OpenGL or DirectX) has been initialized |
+	+--------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::UncapFPS_Hook_OnAfterDrawInit()                       |
+	+--------------------------------------------------------------------------+
+	--]]
+
+	EEex_HookAfterCall(EEex_Label("Hook-CVidMode::SetDisplayMode()-DrawInit()"), {[[
+
+		#MAKE_SHADOW_SPACE(8)
+		mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rax
+
+		test al, al
+		jz #L(skip_call)
+
+		call #L(EEex::UncapFPS_Hook_OnAfterDrawInit)
+
+		skip_call:
+		mov rax, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
+		#DESTROY_SHADOW_SPACE
+	]]})
+
+	--[[
+	+--------------------------------------------------------------------------------------------------------------+
+	| Install debug hook to alter tile rendering                                                                   |
+	+--------------------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] CVidTile::Override_RenderTexture(nTextureId: int, rDest: CRect*, x: int, y: int, dwFlags: uint) |
+	+--------------------------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-CVidTile::RenderTexture()-FirstInstruction"), {"jmp #L(CVidTile::Override_RenderTexture)"})
+
 	EEex_EnableCodeProtection()
 
 end)()
