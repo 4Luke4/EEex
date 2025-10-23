@@ -2511,6 +2511,9 @@ Operations=ADD 28
 Pattern=C7804010000001000000
 Operations=ADD 10
 
+[Hook-bsearchrange()-FirstInstruction]
+Pattern=4C894C2420488954241048894C240855
+
 [Hook-chReadIniFile()-CheckDoBackupProcessingJmp]
 Pattern=33F685C07524
 Operations=ADD 63

@@ -391,6 +391,17 @@
 
 	EEex_JITAt(EEex_Label("Hook-CGameText::Render()-FirstInstruction"), {"jmp #L(CGameText::Override_Render)"})
 
+	--[[
+	+------------------------------------------------------------------------------------------------------------------------------------------+
+	| Fix crash when parsing DLC zips due to bad binary search range resolution in certain situations                                          |
+	+------------------------------------------------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::Override_bsearchrange(key: void*, base: void*, NumOfElements: unsigned long long, SizeOfElements: unsigned long long, |
+	|                  Compare: int(__fastcall*)(const void*, const void*), start: int*, end: int*) -> bool                                    |
+	+------------------------------------------------------------------------------------------------------------------------------------------+
+	--]]
+
+	EEex_JITAt(EEex_Label("Hook-bsearchrange()-FirstInstruction"), {"jmp #L(EEex::Override_bsearchrange)"})
+
 	EEex_EnableCodeProtection()
 
 end)()
