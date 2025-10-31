@@ -702,6 +702,10 @@ Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
 Pattern=488BF94881C1C8050000
 Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
 
+[CVidMode::NUM_FADE_FRAMES]
+Pattern=488BB89010000083BFC47C000000
+Operations=ADD 30, PUSH, READ DWORD, ADD, ADD 4
+
 [CVidMode::SCREENHEIGHT]
 Pattern=0F5BD2660F6EC1
 Operations=ADD -4, PUSH, READ DWORD, ADD, ADD 4
@@ -713,6 +717,10 @@ Operations=ADD -26, PUSH, READ DWORD, ADD, ADD 4
 [CVidPalette::RANGE_COLORS]
 Pattern=488944246033ED
 Operations=ADD 37, PUSH, READ DWORD, ADD, ADD 4
+
+[CVidPalette::m_SuppressTintMasks]
+Pattern=0FB683CF0000008405
+Operations=ADD 9, PUSH, READ DWORD, ADD, ADD 4
 
 [CVisibilityMap::m_SSToVSTable]
 Pattern=44884C24204C89442418488954241048894C2408
@@ -1159,6 +1167,9 @@ Operations=ADD 14, PUSH, READ DWORD, ADD, ADD 4
 [CTimerWorld::StartTime]
 Pattern=C6410401
 
+[CVidMode::ApplyBrightnessContrast]
+Pattern=4883EC480FB68180010000
+
 [CVidMode::FillRect3d]
 Pattern=4883EC508B4208
 Operations=ADD -11
@@ -1166,6 +1177,23 @@ Operations=ADD -11
 [CVidMode::Flip]
 Pattern=80B97001000000
 Operations=ADD -10
+
+[CVidPalette::GetAdd]
+Pattern=F744242800000400
+
+[CVidPalette::GetLight]
+Pattern=4C8BD2488B8810020000
+Operations=ADD -7
+
+[CVidPalette::GetReservedEntries]
+Pattern=0FBAE216
+
+[CVidPalette::GetTint]
+Pattern=488BDA488B8810020000
+Operations=ADD -28
+
+[CVidPalette::SetAUCounter]
+Pattern=40534883EC20488BD9488B49084885C9
 
 [Chitin_GetSectionCallback]
 Pattern=4889742418574883EC20BA01000000
