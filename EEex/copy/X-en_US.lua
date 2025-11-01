@@ -198,6 +198,14 @@ uiStrings["EEex_Options_TRANSLATION_UncapFPS_RemoveMiddleMouseScrollMultiplier_D
 Removes the hardcoded multiplier applied to viewport movement performed by holding down the middle-mouse button.
 ]]
 
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_VSyncEnabled"] = "VSync Enabled"
+
+uiStrings["EEex_Options_TRANSLATION_UncapFPS_VSyncEnabled_Description"] = [[
+Controls whether the engine automatically synchronizes the game's render rate with the monitor.
+
+This eliminates screen tearing at the cost of increased input latency.
+]]
+
 -------------------
 -- Miscellaneous --
 -------------------

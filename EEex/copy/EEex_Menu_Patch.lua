@@ -348,7 +348,7 @@
 	+---------------------------------------------------------+
 	| Call a hook whenever the engine changes the window size |
 	+---------------------------------------------------------+
-	|   [Lua] EEex_Menu_Hook_OnWindowSizeChanged()            |
+	|   [Lua] EEex_Menu_LuaHook_OnWindowSizeChanged()         |
 	+---------------------------------------------------------+
 	--]]
 

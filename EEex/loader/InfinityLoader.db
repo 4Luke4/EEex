@@ -742,6 +742,14 @@ Operations=ADD 20, PUSH, READ DWORD, ADD, ADD 4
 Pattern=756633C0
 Operations=ADD 7, PUSH, READ DWORD, ADD, ADD 4
 
+[d3d]
+Pattern=4585C9747D
+Operations=ADD 15, PUSH, READ DWORD, ADD, ADD 4
+
+[g_drawBackend]
+Pattern=8B84248800000089442438
+Operations=ADD -5, PUSH, READ DWORD, ADD, ADD 5
+
 [g_keywords]
 Pattern=4963074883F840
 Operations=ADD 17, PUSH, READ DWORD, ADD, ADD 4
@@ -1286,6 +1294,10 @@ Operations=ADD 41, PUSH, READ DWORD, ADD, ADD 4
 [SDL_Delay]
 Pattern=55565741544156488BEC
 Operations=ADD 27, PUSH, READ DWORD, ADD, ADD 4
+
+[SDL_GL_SetSwapInterval]
+Pattern=8BD9750A4883C420
+Operations=ADD -14
 
 [SDL_GetModState]
 Pattern=3999EC7E0000

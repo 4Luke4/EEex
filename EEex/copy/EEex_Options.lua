@@ -2745,7 +2745,7 @@ function EEex_Options_Option:_set(newValue, fromRead, needCopy)
 	end
 
 	if self.onChange ~= nil and newValue ~= oldValue then
-		self:onChange()
+		self:onChange(oldValue)
 	end
 
 	return newValue

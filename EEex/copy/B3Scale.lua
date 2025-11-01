@@ -8,7 +8,7 @@ B3Scale_Private_Percentage = EEex_Options_Register("B3Scale_Percentage", EEex_Op
 	["type"]     = EEex_Options_EditType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1, ["floating"] = true }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Scale Module: Percentage" }),
-	["onChange"] = function() B3Scale_Private_PokeEngine() end,
+	["onChange"] = function(self, oldValue) B3Scale_Private_PokeEngine() end,
 }))
 
 EEex_Options_AddTab("EEex_Options_TRANSLATION_Scale_TabTitle", function() return {

@@ -8,7 +8,7 @@ EEex_Options_Register("EEex_UncapFPS_AISpeed", EEex_Options_Option.new({
 	["type"]     = EEex_Options_EditType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 1, ["max"] = 90 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "Program Options", ["key"] = "Maximum Frame Rate" }),
-	["onChange"] = function(self) EEex_CChitin.TIMER_UPDATES_PER_SECOND = self:get() end,
+	["onChange"] = function(self, oldValue) EEex_CChitin.TIMER_UPDATES_PER_SECOND = self:get() end,
 }))
 
 EEex_Options_Register("EEex_UncapFPS_BusyWaitThreshold", EEex_Options_Option.new({
@@ -16,7 +16,7 @@ EEex_Options_Register("EEex_UncapFPS_BusyWaitThreshold", EEex_Options_Option.new
 	["type"]     = EEex_Options_EditType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1000 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Uncap FPS Busy Wait Threshold" }),
-	["onChange"] = function(self) EEex.UncapFPS_BusyWaitThreshold = self:get() end,
+	["onChange"] = function(self, oldValue) EEex.UncapFPS_BusyWaitThreshold = self:get() end,
 }))
 
 EEex_Options_Register("EEex_UncapFPS_Enable", EEex_Options_Option.new({
@@ -24,15 +24,15 @@ EEex_Options_Register("EEex_UncapFPS_Enable", EEex_Options_Option.new({
 	["type"]     = EEex_Options_ToggleType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Uncap FPS" }),
-	["onChange"] = function(self) EEex.UncapFPS_Enabled = self:get() end,
+	["onChange"] = function(self, oldValue) EEex.UncapFPS_Enabled = self:get() end,
 }))
 
 EEex_Options_Register("EEex_UncapFPS_FPSLimit", EEex_Options_Option.new({
 	["default"]  = EEex.GetHighestRefreshRate(),
 	["type"]     = EEex_Options_EditType.new(),
-	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 1, ["max"] = EEex.GetHighestRefreshRate() }),
+	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 1, ["max"] = 5000 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Uncap FPS Limit" }),
-	["onChange"] = function(self) EEex.UncapFPS_FPSLimit = self:get() end,
+	["onChange"] = function(self, oldValue) EEex.UncapFPS_FPSLimit = self:get() end,
 }))
 
 EEex_Options_Register("EEex_UncapFPS_RemoveMiddleMouseScrollMultiplier", EEex_Options_Option.new({
@@ -40,7 +40,18 @@ EEex_Options_Register("EEex_UncapFPS_RemoveMiddleMouseScrollMultiplier", EEex_Op
 	["type"]     = EEex_Options_ToggleType.new(),
 	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1 }),
 	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "Remove Middle Mouse Scroll Multiplier" }),
-	["onChange"] = function(self) EEex.UncapFPS_RemoveMiddleMouseScrollMultiplier = self:get() end,
+	["onChange"] = function(self, oldValue) EEex.UncapFPS_RemoveMiddleMouseScrollMultiplier = self:get() end,
+}))
+
+EEex_UncapFPS_Private_VSyncEnabled = EEex_Options_Register("EEex_UncapFPS_VSyncEnabled", EEex_Options_Option.new({
+	["default"]  = 1,
+	["type"]     = EEex_Options_ToggleType.new(),
+	["accessor"] = EEex_Options_ClampedAccessor.new({ ["min"] = 0, ["max"] = 1 }),
+	["storage"]  = EEex_Options_NumberLuaStorage.new({ ["section"] = "EEex", ["key"] = "VSync Enabled" }),
+	["onChange"] = function(self, oldValue)
+		if oldValue == nil then return end -- Ignore initial read
+		EEex_UncapFPS_SetVSyncEnabled(self:get() ~= 0)
+	end,
 }))
 
 EEex_Options_AddTab("Uncap FPS", function() return {
@@ -84,12 +95,34 @@ EEex_Options_AddTab("Uncap FPS", function() return {
 			["description"] = "EEex_Options_TRANSLATION_UncapFPS_RemoveMiddleMouseScrollMultiplier_Description",
 			["widget"]      = EEex_Options_ToggleWidget.new(),
 		}),
+		EEex_Options_DisplayEntry.new({
+			["optionID"]    = "EEex_UncapFPS_VSyncEnabled",
+			["label"]       = "EEex_Options_TRANSLATION_UncapFPS_VSyncEnabled",
+			["description"] = "EEex_Options_TRANSLATION_UncapFPS_VSyncEnabled_Description",
+			["widget"]      = EEex_Options_ToggleWidget.new(),
+		}),
 	},
 } end)
 
----------------
--- Functions --
----------------
+----------------------
+-- Public Functions --
+----------------------
+
+-- @bubb_doc { EEex_UncapFPS_SetVSyncEnabled }
+--
+-- @summary: Enables / disables VSync.
+--
+-- @warning: Calling this function during engine startup will crash the game.
+--
+-- @param { enabled / type=boolean }: Enables VSync if ``true``; disables VSync if ``false``.
+
+function EEex_UncapFPS_SetVSyncEnabled(enabled)
+	EEex.SetVSyncEnabled(enabled, true)
+end
+
+-----------------------
+-- Private Functions --
+-----------------------
 
 EEex_UncapFPS_Private_ScrollDirection = {
 	["UP"]           = 0,
@@ -379,4 +412,9 @@ function EEex_UncapFPS_LuaHook_CheckKeyboardScroll()
 	if oldScrollState == 0 and newScrollState ~= 0 then
 		EEex.UpdateLastScrollTime()
 	end
+end
+
+function EEex_UncapFPS_LuaHook_OnAfterDrawInit()
+	if EEex_UncapFPS_Private_VSyncEnabled:get() ~= 0 then return end
+	EEex.SetVSyncEnabled(false, false)
 end

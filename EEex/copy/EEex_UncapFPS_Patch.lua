@@ -270,6 +270,7 @@
 	| Install hook after the renderer (OpenGL or DirectX) has been initialized |
 	+--------------------------------------------------------------------------+
 	|   [EEex.dll] EEex::UncapFPS_Hook_OnAfterDrawInit()                       |
+	|   [Lua] EEex_UncapFPS_LuaHook_OnAfterDrawInit()                          |
 	+--------------------------------------------------------------------------+
 	--]]
 
