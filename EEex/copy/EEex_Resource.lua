@@ -207,6 +207,35 @@ function EEex_Resource_GetValidSpellsIterator(spellResRefIterator)
 end
 EEex_Resource_GetValidSpellsItr = EEex_Resource_GetValidSpellsIterator
 
+-- @bubb_doc { EEex_Resource_GetStoreItemsIterator / instance_name=getItemsIterator | getItemsItr }
+--
+-- @summary: Returns an iterator that traverses the ``CStoreFileItem`` entries pointed to by ``storeHeader``.
+--
+-- @self { storeHeader / usertype=CStoreFileHeader }: The header of the .STO file whose items are to be iterated.
+--
+-- @return { type=function() -> CStoreFileItem }: See summary.
+
+function EEex_Resource_GetStoreItemsIterator(storeHeader)
+
+	local fileBase = EEex_UDToPtr(storeHeader) - 0x8
+
+	local itemsBase = fileBase + storeHeader.m_nInventoryOffset
+	local itemSize = CStoreFileItem.sizeof
+
+	local curItemBase = itemsBase
+	local endItemBase = itemsBase + itemSize * storeHeader.m_nInventoryCount
+
+	return function()
+		if curItemBase >= endItemBase then return end
+		local toReturn = EEex_PtrToUD(curItemBase, "CStoreFileItem")
+		curItemBase = curItemBase + itemSize
+		return toReturn
+	end
+end
+EEex_Resource_GetStoreItemsItr    = EEex_Resource_GetStoreItemsIterator
+CStoreFileHeader.getItemsIterator = EEex_Resource_GetStoreItemsIterator
+CStoreFileHeader.getItemsItr      = EEex_Resource_GetStoreItemsIterator
+
 ---------
 -- 2DA --
 ---------
