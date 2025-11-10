@@ -134,6 +134,7 @@ function EEex_Resource_Demand(resref, extension)
 	if not demanded then return end
 
 	local castFunc = ({
+		["STO"] = function() return EEex_PtrToUD(EEex_UDToPtr(demanded) + 0x8, "CStoreFileHeader") end,
 		["EFF"] = function() return EEex_PtrToUD(EEex_UDToPtr(demanded) + 0x8, "CGameEffectBase") end,
 		["ITM"] = function() return EEex_CastUD(demanded, "Item_Header_st") end,
 		["PRO"] = function()
