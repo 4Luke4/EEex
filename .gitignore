@@ -13,6 +13,10 @@
 !/EEex/*.*
 !/EEex/copy
 !/EEex/copy/*.*
+!/EEex/copy/EEex_scripts
+!/EEex/copy/EEex_scripts/*.*
+!/EEex/copy/override
+!/EEex/copy/override/*.*
 !/EEex/language
 !/EEex/language/*.*
 !/EEex/language/english

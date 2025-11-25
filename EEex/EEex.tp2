@@ -56,7 +56,8 @@ REQUIRE_PREDICATE (GAME_IS ~bgee bg2ee eet iwdee~ AND FILE_EXISTS ~data/PATCH26.
 
 	COPY ~EEex/loader~ ~.~
 	COPY ~EEex/loader/Lua52~ ~.~
-	COPY ~EEex/copy~ ~override~
+	COPY ~EEex/copy/EEex_scripts~ ~EEex_scripts~
+	COPY ~EEex/copy/override~ ~override~
 
 
 BEGIN @1 LABEL ~B3-EEex-LuaJIT~
@@ -90,7 +91,7 @@ REQUIRE_PREDICATE MOD_IS_INSTALLED ~EEex.tp2~ (ID_OF_LABEL ~EEex.tp2~ ~B3-EEex-M
 BEGIN @4 LABEL ~B3-EEex-Module-Hotkey~
 REQUIRE_PREDICATE MOD_IS_INSTALLED ~EEex.tp2~ (ID_OF_LABEL ~EEex.tp2~ ~B3-EEex-Main~) @1001
 
-	COPY ~override/EEex_Modules.lua~ ~override~
+	COPY ~EEex_scripts/EEex_Modules.lua~ ~EEex_scripts~
 		REPLACE_TEXTUALLY ~^\([ %TAB%]+\["B3Hotkey"\][ %TAB%]+=[ %TAB%]+\)false~ ~\1true~
 	BUT_ONLY
 
