@@ -1018,24 +1018,24 @@ function EEex_Sprite_Hook_OnCheckQuickLists(sprite, abilityId, changeAmount, rem
 
 	if remove then
 		for _, listener in ipairs(EEex_Sprite_Private_QuickListNotifyRemovedListeners) do
-			listener(sprite, resref)
+			EEex_Utility_TryIgnore(listener, sprite, resref)
 		end
 	elseif changeAmount ~= 0 then
 		for _, listener in ipairs(EEex_Sprite_Private_QuickListsCheckedListeners) do
-			listener(sprite, resref, changeAmount)
+			EEex_Utility_TryIgnore(listener, sprite, resref, changeAmount)
 		end
 	end
 end
 
 function EEex_Sprite_Hook_OnResetQuickListCounts(sprite)
 	for _, listener in ipairs(EEex_Sprite_Private_QuickListCountsResetListeners) do
-		listener(sprite)
+		EEex_Utility_TryIgnore(listener, sprite)
 	end
 end
 
 function EEex_Sprite_LuaHook_OnSpellDisableStateChanged(sprite)
 	for _, listener in ipairs(EEex_Sprite_Private_SpellDisableStateChangedListeners) do
-		listener(sprite)
+		EEex_Utility_TryIgnore(listener, sprite)
 	end
 end
 
@@ -1049,7 +1049,7 @@ function EEex_Sprite_Hook_CheckBlockWeaponHit(attackingSprite, targetSprite, wea
 	}
 
 	for _, listener in ipairs(EEex_Sprite_Private_BlockWeaponHitListeners) do
-		if listener(listenerContext) then
+		if EEex_Utility_TryIgnore(listener, listenerContext) then
 			return true
 		end
 	end
@@ -1270,7 +1270,9 @@ function EEex_Sprite_Hook_CalculateExtraEffectListMarshalSize(sprite)
 	end
 
 	for handlerName, handler in pairs(EEex_Sprite_Private_MarshalHandlers) do
-		addTableExport(handlerName, handler.exporter(sprite))
+		EEex_Utility_TryIgnore(function()
+			addTableExport(handlerName, handler.exporter(sprite))
+		end)
 	end
 
 	-- Marshal data that was stored in the fallback table because it was missing its handler
@@ -1404,7 +1406,7 @@ function EEex_Sprite_LuaHook_ReadExtraEffectListUnmarshal(sprite, baseMemory)
 
 		local handlers = EEex_Sprite_Private_MarshalHandlers[handlerStr]
 		if handlers then
-			handlers.importer(sprite, toFill)
+			EEex_Utility_TryIgnore(handlers.importer, sprite, toFill)
 		else
 			-- If the required marshal handler is missing, keep the data around so that it isn't stripped from the savegame
 			local fallbackStorage = EEex_Utility_GetOrCreateTable(EEex_GetUDAux(sprite), "EEex_Sprite_FallbackMarshalStorage")
@@ -1433,7 +1435,7 @@ function EEex_Sprite_Hook_OnCheckConcentration(sprite)
 	local bSpellDisrupted = false
 
 	for _, damageData in ipairs(spriteAux["EEex_Sprite_DamageEntriesSinceActionStarted"] or {}) do
-		bSpellDisrupted = _G[EEex_Sprite_Private_CustomConcentrationCheckFuncName](sprite, damageData)
+		bSpellDisrupted = EEex_Utility_TryIgnore(_G[EEex_Sprite_Private_CustomConcentrationCheckFuncName], sprite, damageData)
 		if bSpellDisrupted then
 			break
 		end
@@ -1566,13 +1568,13 @@ function EEex_Sprite_LuaHook_OnAfterEffectListUnmarshalled(sprite)
 		for sourceUUID, callbacks in pairs(allCallbacks) do
 			local sourceSprite = EEex_Sprite_GetFromUUID(sourceUUID)
 			for _, callback in ipairs(callbacks) do
-				callback(sourceSprite, sprite)
+				EEex_Utility_TryIgnore(callback, sourceSprite, sprite)
 			end
 		end
 	end
 
 	for _, func in ipairs(EEex_Sprite_LoadedListeners) do
-		func(sprite)
+		EEex_Utility_TryIgnore(func, sprite)
 	end
 end
 
@@ -1590,6 +1592,6 @@ end
 
 function EEex_Sprite_LuaHook_AlterBaseWeaponDamage(context)
 	for _, listener in ipairs(EEex_Sprite_Private_AlterBaseWeaponDamageListeners) do
-		listener(context)
+		EEex_Utility_TryIgnore(listener, context)
 	end
 end

@@ -358,12 +358,12 @@ function EEex_Actionbar_SuppressListeners(bSuppress)
 	EEex_Actionbar_Private_SuppressingListeners = bSuppress
 end
 
-function EEex_Actionbar_RunWithListenersSuppressed(func)
+function EEex_Actionbar_RunWithListenersSuppressed(func, ...)
 	local saved = EEex_Actionbar_Private_SuppressingListeners
 	EEex_Actionbar_Private_SuppressingListeners = true
-	local toReturn = func()
-	EEex_Actionbar_Private_SuppressingListeners = saved
-	return toReturn
+	return EEex_Utility_TryFinally(func,
+		function() EEex_Actionbar_Private_SuppressingListeners = saved end,
+		...)
 end
 
 -- <string, Spell_Header_st, Spell_ability_st>
@@ -467,7 +467,7 @@ function EEex_Actionbar_Hook_StateUpdating(config, state)
 	end
 
 	for _, func in ipairs(EEex_Actionbar_Private_Listeners) do
-		if func(config, state) then
+		if EEex_Utility_TryIgnore(func, config, state) then
 			break
 		end
 	end
@@ -485,7 +485,7 @@ function EEex_Actionbar_Hook_ButtonsUpdated()
 	end
 
 	for _, func in ipairs(EEex_Actionbar_Private_ButtonsUpdatedListeners) do
-		if func() then
+		if EEex_Utility_TryIgnore(func) then
 			break
 		end
 	end

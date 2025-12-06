@@ -195,6 +195,6 @@ CGameAIBase.getStoredScriptingTarget = EEex_AIBase_GetStoredScriptingTarget
 
 function EEex_AIBase_LuaHook_OnScriptingObjectUpdated(aiBase, scriptingObject)
 	for _, listener in ipairs(EEex_AIBase_Private_ScriptingObjectUpdatedListeners) do
-		listener(EEex_GameObject_CastUT(aiBase), scriptingObject)
+		EEex_Utility_TryIgnore(listener, EEex_GameObject_CastUT(aiBase), scriptingObject)
 	end
 end

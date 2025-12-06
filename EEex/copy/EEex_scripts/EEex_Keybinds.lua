@@ -371,7 +371,7 @@ function EEex_Keybinds_Private_Reset()
 end
 
 function EEex_Keybinds_Private_Run(hotkeyDef)
-	hotkeyDef.callback()
+	EEex_Utility_TryIgnore(hotkeyDef.callback)
 end
 
 function EEex_Keybinds_Private_TogglePrintKeys()

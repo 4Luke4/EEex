@@ -120,19 +120,19 @@ end
 
 function EEex_GameState_Hook_OnBeforeIncludes()
 	for _, listener in ipairs(EEex_GameState_Private_BeforeIncludesListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
 function EEex_GameState_Hook_OnAfterIncludes()
 	for _, listener in ipairs(EEex_GameState_Private_AfterIncludesListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
 function EEex_GameState_LuaHook_OnInitialized()
 	for _, listener in ipairs(EEex_GameState_Private_InitializedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 	EEex_GameState_Private_AlreadyInitialized = true
 	EEex_GameState_Private_InitializedListeners = {}
@@ -142,12 +142,12 @@ end
 
 function EEex_GameState_Hook_OnDestroyed()
 	for _, listener in ipairs(EEex_GameState_DestroyedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
 function EEex_GameState_Hook_OnBeforeShutdown()
 	for _, listener in ipairs(EEex_GameState_ShutdownListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end

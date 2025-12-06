@@ -191,10 +191,23 @@ function EEex_Utility_Ternary(condition, ifTrue, ifFalse)
 	if condition then return ifTrue() else return ifFalse() end
 end
 
+function EEex_Utility_TryCatch(func, ...)
+	return { xpcall(func, EEex_ErrorMessageHandler, ...) }
+end
+
 function EEex_Utility_TryFinally(func, finally, ...)
-	local result = { xpcall(func, EEex_ErrorMessageHandler, ...) }
+	local result = EEex_Utility_TryCatch(func, ...)
 	finally()
 	if not result[1] then error(result[2], 0) end
+	return select(2, table.unpack(result))
+end
+
+function EEex_Utility_TryIgnore(func, ...)
+	local result = EEex_Utility_TryCatch(func, ...)
+	if not result[1] then
+		print(result[2])
+		return
+	end
 	return select(2, table.unpack(result))
 end
 

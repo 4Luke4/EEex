@@ -125,7 +125,7 @@ end
 
 function EEex_Opcode_LuaHook_AfterListsResolved(sprite)
 	for _, func in ipairs(EEex_Opcode_ListsResolvedListeners) do
-		func(sprite)
+		EEex_Utility_TryIgnore(func, sprite)
 	end
 end
 

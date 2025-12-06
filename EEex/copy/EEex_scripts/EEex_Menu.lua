@@ -358,7 +358,7 @@ end
 
 function EEex_Menu_Hook_BeforeMainFileLoaded()
 	for _, listener in ipairs(EEex_Menu_BeforeMainFileLoadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
@@ -373,25 +373,25 @@ function EEex_Menu_Hook_AfterMainFileLoaded()
 	end
 
 	for _, listener in ipairs(EEex_Menu_AfterMainFileLoadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
 function EEex_Menu_LuaHook_BeforeMenuStackSave()
 	for _, listener in ipairs(EEex_Menu_BeforeMainFileLoadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 	for _, listener in ipairs(EEex_Menu_BeforeMainFileReloadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
 function EEex_Menu_Hook_AfterMenuStackRestore()
 	for _, listener in ipairs(EEex_Menu_AfterMainFileLoadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 	for _, listener in ipairs(EEex_Menu_AfterMainFileReloadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 
@@ -401,7 +401,7 @@ function EEex_Menu_Hook_BeforeListRenderingItem(list, item, window, rClipBase, a
 		local listeners = EEex_Menu_BeforeListRendersItemListeners[listName]
 		if listeners then
 			for _, listener in ipairs(listeners) do
-				listener(list, item, window, rClipBase, alpha, menu)
+				EEex_Utility_TryIgnore(listener, list, item, window, rClipBase, alpha, menu)
 			end
 		end
 	end
@@ -436,7 +436,7 @@ function EEex_Menu_LuaHook_OnWindowSizeChanged()
 	local height = CVidMode.SCREENHEIGHT
 
 	for _, listener in ipairs(EEex_Menu_WindowSizeChangedListeners) do
-		listener(width, height)
+		EEex_Utility_TryIgnore(listener, width, height)
 	end
 end
 
@@ -451,7 +451,7 @@ function EEex_Menu_LuaHook_AfterTranslationLoaded()
 	uiTranslationFile = EEex_Resource_Fetch("L_"..lang, "LUA") ~= nil and lang or nil
 
 	for _, listener in ipairs(EEex_Menu_TranslationLoadedListeners) do
-		listener()
+		EEex_Utility_TryIgnore(listener)
 	end
 end
 

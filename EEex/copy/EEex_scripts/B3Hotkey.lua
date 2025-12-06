@@ -185,7 +185,7 @@ function B3Hotkey_KeyReleasedListener(key)
 		if hotkeyValueType == "string" then
 			B3Hotkey_AttemptToCastViaHotkey(hotkeyValue)
 		elseif hotkeyValueType == "function" then
-			hotkeyValue()
+			EEex_Utility_TryIgnore(hotkeyValue)
 		end
 	end
 	B3Hotkey_LastSuccessfulHotkey = nil

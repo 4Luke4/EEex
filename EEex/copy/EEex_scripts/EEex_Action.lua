@@ -331,10 +331,10 @@ function EEex_Action_LuaHook_OnAfterSpriteStartedAction(sprite)
 	EEex_Action_Private_SpriteStartedNextActionListeners = {}
 
 	for _, listener in ipairs(temp) do
-		listener(sprite, action)
+		EEex_Utility_TryIgnore(listener, sprite, action)
 	end
 
 	for _, listener in ipairs(EEex_Action_Private_SpriteStartedActionListeners) do
-		listener(sprite, action)
+		EEex_Utility_TryIgnore(listener, sprite, action)
 	end
 end

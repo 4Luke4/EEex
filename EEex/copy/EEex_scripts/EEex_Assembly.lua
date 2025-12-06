@@ -787,8 +787,7 @@ function EEex_MemoryManager:init(structEntries, stackModeFunc)
 		local retVals
 		EEex_RunWithStack(currentOffset, function(rsp)
 			initMemory(rsp)
-			retVals = {stackModeFunc(self)}
-			self:destruct()
+			retVals = { EEex_Utility_TryFinally(stackModeFunc, function() self:destruct() end, self) }
 		end)
 		return table.unpack(retVals)
 	else

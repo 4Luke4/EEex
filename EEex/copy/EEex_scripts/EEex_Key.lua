@@ -977,7 +977,7 @@ function EEex_Key_Private_OnPressed(key, bRepeat)
 
 	if EEex_Key_Private_CaptureFunc ~= nil then
 		if not bRepeat then
-			EEex_Key_Private_CaptureFunc(key)
+			EEex_Utility_TryIgnore(EEex_Key_Private_CaptureFunc, key)
 		end
 		return true -- Consume event
 	end
@@ -990,7 +990,7 @@ function EEex_Key_Private_OnPressed(key, bRepeat)
 	end
 
 	for _, entry in ipairs(EEex_Key_PressedListeners) do
-		if (not bRepeat or entry[2]) and entry[1](key, bRepeat) then
+		if (not bRepeat or entry[2]) and EEex_Utility_TryIgnore(entry[1], key, bRepeat) then
 			return true -- Consume event
 		end
 	end
@@ -1008,7 +1008,7 @@ function EEex_Key_Private_OnReleased(key)
 	end
 
 	for i, func in ipairs(EEex_Key_ReleasedListeners) do
-		if func(key) then
+		if EEex_Utility_TryIgnore(func, key) then
 			return true -- Consume event
 		end
 	end
