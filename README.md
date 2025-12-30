@@ -41,6 +41,19 @@ A WeiDU installer has been intentionally omitted from the master branch to preve
 <br>
 <br>
 <br>
+
+<h1>Install Order</h1>
+EEex itself has no external mod dependencies, and thus can go anywhere in the install order.
+<br>
+<br>
+There is one notable exception — certain storefronts, (notably Steam), distribute the Siege of Dragonspear DLC for BG:EE as a zip archive. This archive must be merged with the base game before any mods can be installed. In this case, <a href="https://github.com/Argent77/A7-DlcMerger/releases">DLC Merger</a> must be the first mod in the install order, (i.e. go before EEex).
+<br>
+<br>
+It is generally good practice to place EEex near the beginning of the install order, as it needs to be installed before any mods that rely on it, or detect it to activate additional functionality.
+<br>
+<br>
+<br>
+
 <h1>Installation</h1>
 EEex is distributed as a Gibberlings3 installer. After running the setup file, simply point it to your game directory and click "Install".
 <br>
