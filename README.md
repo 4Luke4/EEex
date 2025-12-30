@@ -3,6 +3,7 @@
 - [Overview](#overview)
 - [Compatibility](#compatibility)
 - [Download](#download)
+- [Install Order](#install-order)
 - [Installation](#installation)
 - [Stability](#stability)
 - [How EEex Works](#how-eeex-works)
@@ -13,6 +14,7 @@ EEex is an executable extender for Beamdog's Enhanced Edition of the Infinity En
 <br>
 <br>
 EEex's core component does <b>not</b> make any gameplay changes itself – it merely enables other mods to do so. The installer provides additional <a href="https://eeex-docs.readthedocs.io/en/latest/Introduction/components.html">components</a> that make gameplay changes.
+<br>
 <br>
 <br>
 <h1>Compatibility</h1>
@@ -62,6 +64,7 @@ EEex is distributed as a Gibberlings3 installer. After running the setup file, s
 - Older versions of EEex are distributed without the Gibberlings3 installer. Extract the archive's contents into your game directory and run the setup file to install.
 
 <b>Please note:</b> The game must be started using InfinityLoader.exe / EEex.exe after installation; any attempt to start the game using the vanilla executable will result in a crash. If InfinityLoader.exe fails to start, please ensure you have installed the latest <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe/">Microsoft Visual C++ Redistributable</a>.
+<br>
 <br>
 <br>
 
