@@ -704,7 +704,7 @@ function EEex_HookAfterRestoreWithLabels(address, restoreDelay, restoreSize, ret
 	EEex_HookAfterRestoreInternal(address, restoreDelay, restoreSize, returnDelay, labelPairs, assemblyT)
 end
 
-function EEex_HookAttemptProfile(address, hookPart, attemptRestorePart, expectedBytes)
+function EEex_HookAttemptProfile(address, attemptRestorePart, expectedBytes)
 
 	local opcode = EEex_ReadU8(address)
 
@@ -728,8 +728,33 @@ function EEex_HookAttemptProfile(address, hookPart, attemptRestorePart, expected
 	EEex_JITAt(address, {
 		"jmp short ",
 		EEex_JITNear(EEex_FlattenTable({
-			hookPart,
-			"#ENDL",
+			{[[
+				#STACK_MOD(8)
+				#MAKE_SHADOW_SPACE(88)
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rax
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-16)], rcx
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-24)], rdx
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-32)], r8
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-40)], r9
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-48)], r10
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-56)], r11
+				movdqu [rsp+#SHADOW_SPACE_BOTTOM(-72)], xmm0
+				movdqu [rsp+#SHADOW_SPACE_BOTTOM(-88)], xmm1
+				mov rcx, ]], address, [[ #ENDL
+				lea rdx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-88)]
+				lea r8, qword ptr ss:[rsp+#LAST_FRAME_TOP()]
+				call #L(Profiler_Trace)
+				mov rax, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)]
+				mov rcx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-16)]
+				mov rdx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-24)]
+				mov r8, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-32)]
+				mov r9, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-40)]
+				mov r10, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-48)]
+				mov r11, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-56)]
+				movdqu xmm0, [rsp+#SHADOW_SPACE_BOTTOM(-72)]
+				movdqu xmm1, [rsp+#SHADOW_SPACE_BOTTOM(-88)]
+				#DESTROY_SHADOW_SPACE
+			]]},
 			attemptRestorePart,
 		})),
 	})

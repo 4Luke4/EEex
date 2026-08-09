@@ -18,6 +18,7 @@
 @1000 = ~Game not supported.~
 @1001 = ~This component requires the core component to be installed.~
 @1002 = ~This component requires the main component to be installed.~
+@1003 = ~Game not handled. This is a logic error; report to Bubb.~
 
 // `GROUP`s
 @2000 = ~Optional~

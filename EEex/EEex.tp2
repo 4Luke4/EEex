@@ -109,12 +109,24 @@ REQUIRE_PREDICATE MOD_IS_INSTALLED ~EEex.tp2~ 0 @1001 // This component requires
 	COPY ~EEex/copy/override~ ~override~
 
 	ACTION_IF FILE_EXISTS ~data/PATCH27.BIF~ BEGIN
-		COPY ~EEex/loader/v2.7.3.0/dll~ ~.~
-		COPY ~EEex/loader/v2.7.3.0/pattern_dbs~ ~EEex_scripts/extra_pattern_dbs~
+		OUTER_SPRINT game_version ~v2.7.3.0~
 	END ELSE BEGIN
-		COPY ~EEex/loader/v2.6.6.0/dll~ ~.~
-		COPY ~EEex/loader/v2.6.6.0/pattern_dbs~ ~EEex_scripts/extra_pattern_dbs~
+		OUTER_SPRINT game_version ~v2.6.6.0~
 	END
+
+	ACTION_IF GAME_IS ~bgee~ BEGIN
+		OUTER_SPRINT game_folder ~bgee~
+	END ELSE ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
+		OUTER_SPRINT game_folder ~bg2ee~
+	END ELSE ACTION_IF GAME_IS ~iwdee~ BEGIN
+		OUTER_SPRINT game_folder ~iwdee~
+	END ELSE BEGIN
+		FAIL @1003
+	END
+
+	COPY ~EEex/loader/%game_version%~ ~.~
+	COPY ~EEex/loader/%game_version%/pattern_dbs~ ~EEex_scripts/extra_pattern_dbs~
+	COPY ~EEex/loader/%game_version%/%game_folder%~ ~EEex_scripts/profiler~
 
 //////////////////////////////////////////////////////////////////////////////////
 // Enable effect menu module: LShift-on-hover to view spells affecting creature //
