@@ -242,47 +242,43 @@
 	)
 
 	--[[
-	+--------------------------------------------------------------------------------------------------+
-	| Call a hook before UI lists render one of their items                                            |
-	+--------------------------------------------------------------------------------------------------+
-	|   Used to implement listeners that can alter list rendering behavior                             |
-	+--------------------------------------------------------------------------------------------------+
-	|   [Lua] EEex_Menu_Hook_BeforeListRenderingItem(list: uiItem, item: uiItem, window: SDL_Rect,     |
-	|                                                rClipBase: SDL_Rect, alpha: number, menu: uiMenu) |
-	+--------------------------------------------------------------------------------------------------+
+	+----------------------------------------------------------------------------------------------------------------+
+	| Call a hook before UI lists render one of their items                                                          |
+	+----------------------------------------------------------------------------------------------------------------+
+	|   Used to implement listeners that can alter list rendering behavior                                           |
+	+----------------------------------------------------------------------------------------------------------------+
+	|   [EEex.dll] EEex::Menu_Hook_OnBeforeListRenderingItem(item: uiItem*, window: SDL_Rect*, rClipBase: SDL_Rect*, |
+	|                                                        alpha: int, menu: uiMenu*, list: uiItem*)               |
+	|                                                                                                                |
+	|   [Lua] EEex_Menu_LuaHook_BeforeListRenderingItem(list: uiItem, item: uiItem, window: SDL_Rect,                |
+	|                                                   rClipBase: SDL_Rect, alpha: number, menu: uiMenu)            |
+	+----------------------------------------------------------------------------------------------------------------+
 	--]]
 
 	EEex_HookBeforeCallWithLabels(EEex_Label("Hook-RenderListCallback()-drawItem()"), {
 		{"hook_integrity_watchdog_ignore_registers", {EEex_HookIntegrityWatchdogRegister.R10, EEex_HookIntegrityWatchdogRegister.R11}}},
 		EEex_FlattenTable({
 			{[[
-				#MAKE_SHADOW_SPACE(112)
+				#MAKE_SHADOW_SPACE(48)
 				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-8)], rcx
 				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-16)], rdx
 				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-24)], r8
 				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-32)], r9
-			]]},
-			EEex_GenLuaCall("EEex_Menu_Hook_BeforeListRenderingItem", {
-				["args"] = {
-					-- list
-					function(rspOffset) return {"mov qword ptr ss:[rsp+#$(1)], rsi #ENDL", {rspOffset}}, "uiItem" end,
-					-- item
-					function(rspOffset) return {"mov qword ptr ss:[rsp+#$(1)], rcx #ENDL", {rspOffset}}, "uiItem" end,
-					-- window
-					function(rspOffset) return {"mov qword ptr ss:[rsp+#$(1)], rdx #ENDL", {rspOffset}}, "SDL_Rect" end,
-					-- rClipBase
-					function(rspOffset) return {"mov qword ptr ss:[rsp+#$(1)], r8 #ENDL", {rspOffset}}, "SDL_Rect" end,
-					-- alpha
-					function(rspOffset) return {"mov qword ptr ss:[rsp+#$(1)], r9 #ENDL", {rspOffset}} end,
-					-- menu
-					function(rspOffset) return {[[
-						mov rax, qword ptr ss:[rsp+#LAST_FRAME_TOP(20h)]
-						mov qword ptr ss:[rsp+#$(1)], rax
-					]], {rspOffset}}, "uiMenu" end,
-				},
-			}),
-			{[[
-				call_error:
+
+				; rcx already item
+				; rdx already window
+				; r8 already rClipBase
+				; r9 already alpha
+
+				; menu
+				mov rax, qword ptr ss:[rsp+#LAST_FRAME_TOP(20h)]
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-48)], rax
+
+				; list
+				mov qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-40)], rsi
+
+				call #L(EEex::Menu_Hook_OnBeforeListRenderingItem)
+
 				mov r9, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-32)]
 				mov r8, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-24)]
 				mov rdx, qword ptr ss:[rsp+#SHADOW_SPACE_BOTTOM(-16)]

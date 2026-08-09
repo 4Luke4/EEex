@@ -347,7 +347,10 @@ end
 EEex_Menu_BeforeListRendersItemListeners = {}
 
 -- Given listener function is called before a list renders an item.
+-- DON'T USE: Causes extreme stuttering when EEex's fps uncap is enabled.
 function EEex_Menu_AddBeforeListRendersItemListener(listName, listener)
+	-- [EEex.dll]
+	EEex.Menu_LuaHook_BeforeListRenderingItem_Enabled = true
 	local listListeners = EEex_Utility_GetOrCreateTable(EEex_Menu_BeforeListRendersItemListeners, listName)
 	table.insert(listListeners, listener)
 end
@@ -429,7 +432,7 @@ function EEex_Menu_Hook_AfterMenuStackRestore()
 	end
 end
 
-function EEex_Menu_Hook_BeforeListRenderingItem(list, item, window, rClipBase, alpha, menu)
+function EEex_Menu_LuaHook_BeforeListRenderingItem(list, item, window, rClipBase, alpha, menu)
 	local listName = list.name:get()
 	if listName ~= "" then
 		local listeners = EEex_Menu_BeforeListRendersItemListeners[listName]
