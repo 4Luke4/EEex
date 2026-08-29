@@ -4752,17 +4752,15 @@ function EEex_Options_Private_MarshalKeybindInternal(modifierKeys, keys, fireTyp
 	return fireType and sequenceStr.."|Up" or sequenceStr.."|Down"
 end
 
-function EEex_Options_Private_ReadOptions(early)
+function EEex_Options_Private_ReadOptions()
 
 	for _, option in pairs(EEex_Options_Private_IdToOption) do
-		if early == option:_canReadEarly() then
+		if not option:_canReadEarly() then
 			option:_set(option:_read(), true)
 		end
 	end
 
-	if not early then
-		EEex_Options_Private_AlreadyRead = true
-	end
+	EEex_Options_Private_AlreadyRead = true
 end
 
 function EEex_Options_Private_SpecialSortTabs()
@@ -4985,7 +4983,8 @@ function EEex_Options_Register(id, option)
 
 	EEex_Options_Private_IdToOption[id] = option
 
-	if EEex_Options_Private_AlreadyRead then
+	-- Instantly read if the option can be read before game init or if the option has been registered after game init
+	if option:_canReadEarly() or EEex_Options_Private_AlreadyRead then
 		option:_set(option:_read(), true)
 	end
 

@@ -3,11 +3,7 @@
 -- Listeners ==
 --=============
 
-EEex_Options_Private_ReadOptions(true)
-
-EEex_GameState_AddBeforeIncludesListener(function()
-	EEex_Options_Private_ReadOptions(false)
-end)
+EEex_GameState_AddBeforeIncludesListener(EEex_Options_Private_ReadOptions)
 
 EEex_Menu_AddMainFileLoadedListener(function()
 
