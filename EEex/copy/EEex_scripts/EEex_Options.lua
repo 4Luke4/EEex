@@ -3785,6 +3785,7 @@ end
 -- Globals ==
 --===========
 
+EEex_Options_Private_AlreadyRead                   = false
 EEex_Options_Private_EditCaptured                  = nil -- uiItem
 EEex_Options_Private_EditPendingFocus              = nil -- string
 EEex_Options_Private_IdToDisplayEntry              = {}
@@ -4752,10 +4753,15 @@ function EEex_Options_Private_MarshalKeybindInternal(modifierKeys, keys, fireTyp
 end
 
 function EEex_Options_Private_ReadOptions(early)
+
 	for _, option in pairs(EEex_Options_Private_IdToOption) do
 		if early == option:_canReadEarly() then
 			option:_set(option:_read(), true)
 		end
+	end
+
+	if not early then
+		EEex_Options_Private_AlreadyRead = true
 	end
 end
 
@@ -4976,6 +4982,12 @@ end
 -- @return { type=EEex_Options_Option }: Returns ``option``.
 
 function EEex_Options_Register(id, option)
+
 	EEex_Options_Private_IdToOption[id] = option
+
+	if EEex_Options_Private_AlreadyRead then
+		option:_set(option:_read(), true)
+	end
+
 	return option
 end
