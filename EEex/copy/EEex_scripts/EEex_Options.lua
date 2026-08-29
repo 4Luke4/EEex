@@ -3796,6 +3796,7 @@ EEex_Options_Private_KeybindRecordedKeys           = {}
 EEex_Options_Private_KeybindRecordedModifiers      = {}
 EEex_Options_Private_MainInset                     = nil -- EEex_Options_Private_LayoutInset
 EEex_Options_Private_MainVerticalTabArea           = nil -- EEex_Options_Private_LayoutVerticalTabArea
+EEex_Options_Private_NeedsUnpauseWhenClosed        = nil -- boolean
 EEex_Options_Private_TabInsertIndex                = 1
 EEex_Options_Private_Tabs                          = {}
 EEex_Options_Private_TemplateInstancesByName       = {}
@@ -4893,10 +4894,16 @@ end
 -- @summary: Closes the "EEex Options" menu if it is currently open.
 
 function EEex_Options_Close()
+
 	if not Infinity_IsMenuOnStack("EEex_Options") then return end
 	Infinity_PopMenu("EEex_Options")
 	EEex_Options_Private_CheckKillFocus()
 	EEex_Options_Private_MainInset:hide()
+
+	-- Automatically unpause on menu close if the menu paused the game
+	if EEex_Options_Private_NeedsUnpauseWhenClosed and worldScreen == e:GetActiveEngine() and worldScreen:CheckIfPaused() then
+		EEex_GameState_TogglePause(false)
+	end
 end
 
 -- @bubb_doc { EEex_Options_Open }
@@ -4904,11 +4911,18 @@ end
 -- @summary: Opens the "EEex Options" menu if it is currently closed.
 
 function EEex_Options_Open()
+
 	if Infinity_IsMenuOnStack("EEex_Options") then return end
 	EEex_Options_Private_MainInset:showBeforeLayout()
 	EEex_Options_Private_Layout()
 	EEex_Options_Private_MainInset:showAfterLayout()
 	Infinity_PushMenu("EEex_Options")
+
+	-- Automatically pause on menu open
+	EEex_Options_Private_NeedsUnpauseWhenClosed = worldScreen == e:GetActiveEngine() and not worldScreen:CheckIfPaused()
+	if EEex_Options_Private_NeedsUnpauseWhenClosed then
+		EEex_GameState_TogglePause(false, false)
+	end
 end
 
 ---------------------

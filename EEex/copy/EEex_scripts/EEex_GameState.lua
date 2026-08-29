@@ -60,6 +60,32 @@ function EEex_GameState_SetGlobalString(variableName, value)
 	EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_variables:setString(variableName, value)
 end
 
+-- @bubb_doc { EEex_GameState_TogglePause }
+--
+-- @summary: Toggles the pause status of the game.
+--
+-- @param { bLogPause / type=boolean / default=true }: Determines whether a message is written to the combat log.
+--
+-- @param { bVisualPause / type=boolean / default=true }:
+--
+--     Determines whether the engine renders screen-edge arrows and forces party markers during pause.
+--
+-- @param { bRequireHostUnpause / type=boolean / default=false }: Unknown.
+--
+-- @param { nIdPlayerPause / type=number / default=0 }: Unknown.
+--
+-- @param { bSendMessage / type=boolean / default=true }: Unknown.
+
+function EEex_GameState_TogglePause(bLogPause, bVisualPause, bRequireHostUnpause, nIdPlayerPause, bSendMessage)
+	EngineGlobals.g_pBaldurChitin.m_pEngineWorld:TogglePauseGame(
+		EEex_Utility_Default(bVisualPause, true),
+		EEex_Utility_Default(bSendMessage, true),
+		nIdPlayerPause or 0,
+		EEex_Utility_Default(bLogPause, true),
+		bRequireHostUnpause or false
+	)
+end
+
 ---------------
 -- Listeners --
 ---------------
