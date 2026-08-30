@@ -54,6 +54,31 @@ function EEex_GameState_GetInputMode()
 	return EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_gameSave.m_inputMode
 end
 
+-- @bubb_doc { EEex_GameState_WouldWorldScreenProcessInput }
+--
+-- @summary: Returns ``true`` if the world screen would currently process a keypress.
+--
+-- @note: It is the caller's responsibility to check if the active engine is the world screen and if a text edit is currently focused.
+--
+-- @return { type=boolean }: See summary.
+
+function EEex_GameState_WouldWorldScreenProcessInput()
+
+	-- Detects a top-level modal window. Hack because I'm not sending the keypress through the entire menu stack.
+	if EngineGlobals.popupActive() then
+		return false
+	end
+
+	-- Ensure not in cutscene or dialog mode
+	local inputMode = EEex_GameState_GetInputMode()
+	if inputMode == EEex_GameState_InputMode.VALUE_FULL_CUTSCENE or inputMode == EEex_GameState_InputMode.VALUE_LIGHT_CUTSCENE then
+		return false
+	end
+
+	local inputFlags = EEex_Flags({ EEex_GameState_InputMode.FLAG_WORLD_SCREEN_ALLOW_KEY_INPUT, EEex_GameState_InputMode.FLAG_WORLD_SCREEN_ALLOW_ALL_INPUT })
+	return EEex_BAnd(inputMode, inputFlags) ~= 0
+end
+
 -- @bubb_doc { EEex_GameState_SetGlobalInt }
 --
 -- @summary: Sets the integer value of the ``variableName`` Global scoped to ``GLOBAL`` to ``value``.

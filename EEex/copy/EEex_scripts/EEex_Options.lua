@@ -4901,7 +4901,10 @@ function EEex_Options_Close()
 	EEex_Options_Private_MainInset:hide()
 
 	-- Automatically unpause on menu close if the menu paused the game
-	if EEex_Options_Private_NeedsUnpauseWhenClosed and worldScreen == e:GetActiveEngine() and worldScreen:CheckIfPaused() then
+	local activeEngine = e:GetActiveEngine()
+	local isWorldScreen = worldScreen == activeEngine or mapScreen == activeEngine
+
+	if EEex_Options_Private_NeedsUnpauseWhenClosed and isWorldScreen and worldScreen:CheckIfPaused() then
 		EEex_GameState_TogglePause(false)
 	end
 end
@@ -4912,6 +4915,19 @@ end
 
 function EEex_Options_Open()
 
+	-- Don't open if typing in a text edit
+	if Infinity_TextEditHasFocus() ~= 0 then
+		return
+	end
+
+	local activeEngine = e:GetActiveEngine()
+	local isWorldScreen = worldScreen == activeEngine or mapScreen == activeEngine
+
+	-- Don't open in weird situations (e.g. dialog, cutscenes)
+	if isWorldScreen and not EEex_GameState_WouldWorldScreenProcessInput() then
+		return
+	end
+
 	if Infinity_IsMenuOnStack("EEex_Options") then return end
 	EEex_Options_Private_MainInset:showBeforeLayout()
 	EEex_Options_Private_Layout()
@@ -4919,7 +4935,7 @@ function EEex_Options_Open()
 	Infinity_PushMenu("EEex_Options")
 
 	-- Automatically pause on menu open
-	EEex_Options_Private_NeedsUnpauseWhenClosed = worldScreen == e:GetActiveEngine() and not worldScreen:CheckIfPaused()
+	EEex_Options_Private_NeedsUnpauseWhenClosed = isWorldScreen and not worldScreen:CheckIfPaused()
 	if EEex_Options_Private_NeedsUnpauseWhenClosed then
 		EEex_GameState_TogglePause(false, false)
 	end
