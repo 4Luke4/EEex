@@ -288,6 +288,10 @@ Operations=ADD -7
 [CGameObjectArray::GetShare]
 Pattern=48C7020000000083F9FF
 
+[CGameSave::SetInputMode]
+Pattern=81FA6E010100
+Operations=ADD -15
+
 [CGameSprite::CheckQuickLists]
 Pattern=405557415441554156488D6C24D1
 
@@ -648,6 +652,10 @@ Operations=ADD -15
 
 [findMenu]
 Pattern=4881ECA800000048894C2448
+
+[popupActive]
+Pattern=4885C07424488B4830
+Operations=ADD -16
 
 [rand]
 Pattern=4883EC208BFA8BD9
@@ -1186,10 +1194,6 @@ Operations=ADD -30
 [CGameEffect::GetItemEffect]
 Pattern=488BF9B930000000
 Operations=ADD -10
-
-[CGameSave::SetInputMode]
-Pattern=81FA6E010100
-Operations=ADD -15
 
 [CGameSprite::Construct(byte*,int,ushort,uint,ushort,ushort,uint,CPoint,ushort,int)]
 Pattern=488D6C24F94881EC00010000

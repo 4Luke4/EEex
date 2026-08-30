@@ -225,9 +225,19 @@ function EEex_UncapFPS_Private_IsScrollAccepted(game)
 		return false
 	end
 
+	-- Detects a top-level modal window. Hack because I'm not sending the keypress through the entire menu stack.
+	if EngineGlobals.popupActive() then
+		return false
+	end
+
 	-- Ensure not in cutscene or dialog mode
 	local inputMode = game.m_gameSave.m_inputMode
-	return EEex_BAnd(inputMode - 0x1016E, 0xFFFDFFFF) ~= 0 and EEex_BAnd(inputMode, 0x801) ~= 0
+	if inputMode == EEex_GameState_InputMode.VALUE_FULL_CUTSCENE or inputMode == EEex_GameState_InputMode.VALUE_LIGHT_CUTSCENE then
+		return false
+	end
+
+	local inputFlags = EEex_Flags({ EEex_GameState_InputMode.FLAG_WORLD_SCREEN_ALLOW_KEY_INPUT, EEex_GameState_InputMode.FLAG_WORLD_SCREEN_ALLOW_ALL_INPUT })
+	return EEex_BAnd(inputMode, inputFlags) ~= 0
 end
 
 EEex_UncapFPS_Private_ResolveScrollStateSwitch = {

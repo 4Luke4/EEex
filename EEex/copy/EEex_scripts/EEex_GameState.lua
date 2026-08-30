@@ -1,4 +1,23 @@
 
+---------------
+-- Constants --
+---------------
+
+-- The missing flag values probably meant something in the classic engine, but are unused in the EEs.
+EEex_GameState_InputMode = {
+	["FLAG_WORLD_SCREEN_ALLOW_ALL_INPUT"]           = 0x00000001,
+	["VALUE_DIALOG_NO_CONTROL"]                     = 0x00000182, --         0x100 |  0x80 | 0x2
+	["VALUE_DIALOG_IN_CONTROL"]                     = 0x00000502, -- 0x400 | 0x100 |       | 0x2
+	["FLAG_WORLD_SCREEN_ALLOW_KEY_INPUT"]           = 0x00000800,
+	["VALUE_PICK_PARTY"]                            = 0x00000802, -- 0x800 (FLAG_WORLD_SCREEN_ALLOW_KEY_INPUT) | 0x2
+	["VALUE_DEATH"]                                 = 0x00001000,
+	["FLAG_WORLD_SCREEN_ALLOW_MOUSE_INTERACTION"]   = 0x00004000,
+	["FLAG_WORLD_SCREEN_ALLOW_INTERFACE_AUTO_HIDE"] = 0x00010000,
+	["VALUE_FULL_CUTSCENE"]                         = 0x0001016E, --           0x10000 (FLAG_WORLD_SCREEN_ALLOW_INTERFACE_AUTO_HIDE) | 0x100 | 0x40 | 0x20 | 0x8 | 0x4 | 0x2
+	["VALUE_LIGHT_CUTSCENE"]                        = 0x0003016E, -- 0x20000 | 0x10000 (FLAG_WORLD_SCREEN_ALLOW_INTERFACE_AUTO_HIDE) | 0x100 | 0x40 | 0x20 | 0x8 | 0x4 | 0x2
+	["VALUE_NORMAL"]                                = 0xFFFFFFFF,
+}
+
 -------------
 -- General --
 -------------
@@ -31,6 +50,10 @@ function EEex_GameState_GetGlobalString(variableName)
 	return EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_variables:getString(variableName)
 end
 
+function EEex_GameState_GetInputMode()
+	return EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_gameSave.m_inputMode
+end
+
 -- @bubb_doc { EEex_GameState_SetGlobalInt }
 --
 -- @summary: Sets the integer value of the ``variableName`` Global scoped to ``GLOBAL`` to ``value``.
@@ -58,6 +81,10 @@ end
 
 function EEex_GameState_SetGlobalString(variableName, value)
 	EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_variables:setString(variableName, value)
+end
+
+function EEex_GameState_SetInputMode(mode)
+	EngineGlobals.g_pBaldurChitin.m_pObjectGame.m_gameSave:SetInputMode(mode)
 end
 
 -- @bubb_doc { EEex_GameState_TogglePause }
