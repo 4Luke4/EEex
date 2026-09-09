@@ -138,7 +138,7 @@ end
 				local curScriptNum = aiBase.m_curScriptNum
 				print(string.format("%s executing action %d (%s), script level %d (%s), block %d, response %d",
 					EEex_Debug_Private_GetObjectName(aiBase), actionID, actionNames[actionID] or "unknown", curScriptNum,
-					aiBase:getScriptLevelResRef(aiBase, curScriptNum >= 3 and curScriptNum + 1 or curScriptNum),
+					aiBase:getScriptLevelResRef(curScriptNum >= 3 and curScriptNum + 1 or curScriptNum),
 					aiBase.m_curResponseSetNum, aiBase.m_curResponseNum))
 			end
 		end
